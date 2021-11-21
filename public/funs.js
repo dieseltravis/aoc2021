@@ -1,5 +1,5 @@
-(function() {
-  "use strict";
+(function () {
+  'use strict';
 
   const all = {
     day1: {
@@ -104,5 +104,5 @@
     }
   };
 
-  this.funs = (day, part) => all["day" + day]["part" + part];
+  this.funs = (day, part) => all['day' + day]['part' + part];
 }.call(this));

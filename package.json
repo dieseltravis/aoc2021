@@ -9,9 +9,6 @@
     "test": "node --check server.js && semistandard #&& eslint server.js public/*.js",
     "start": "node server.js"
   },
-  "engines": {
-    "node": ">= 12.x"
-  },
   "dependencies": {
     "connect-timeout": "^1.9.0",
     "express": "^4.17.1",

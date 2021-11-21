@@ -1,4 +1,4 @@
-dieseltravis/aoc2021 Copyright 2021 Travis Hardiman (“Licensor”)
+dieseltravis/aoc2021 valiant-nervous-yoke Copyright 2021 Travis Hardiman (“Licensor”)
 
 **HIPPOCRATIC LICENSE**
 

@@ -165,7 +165,7 @@ fs.readFile(path.join(__dirname, 'public/funs.js'), function (err, content) {
           a += "<b id='" + key + "_part_1_lines' style='width:" + (100 * p1.lineCount / funsJsCounts.maxLines) + "%' title='" + Math.round(100 * p1.lineCount / funsJsCounts.maxLines) + "%'>" + p1.lineCount + ' lines</b>';
         }
         a += "</li><li id='" + key + "_part_2'>part 2 ";
-        if (p2 && funsJsCounts) {        
+        if (p2 && funsJsCounts) {
           a += "<b id='" + key + "_part_2_chars' style='width:" + (100 * p2.charCount / funsJsCounts.maxChars) + "%' title='" + Math.round(100 * p2.charCount / funsJsCounts.maxChars) + "%'>" + p2.charCount + ' chars</b> ';
           a += "<b id='" + key + "_part_2_lines' style='width:" + (100 * p2.lineCount / funsJsCounts.maxLines) + "%' title='" + Math.round(100 * p2.lineCount / funsJsCounts.maxLines) + "%'>" + p2.lineCount + ' lines</b>';
         }

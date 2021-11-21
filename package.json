@@ -6,8 +6,11 @@
   "homepage": "https://valiant-nervous-yoke.glitch.me/",
   "main": "server.js",
   "scripts": {
-    "test": "node --check server.js && semistandard #&& eslint server.js public/*.js",
+    "test": "node --check server.js && semistandard && eslint server.js public/*.js",
     "start": "node server.js"
+  },
+  "engines": {
+    "node": ">= 12.x"
   },
   "dependencies": {
     "connect-timeout": "^1.9.0",

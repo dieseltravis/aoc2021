@@ -1,9 +1,9 @@
 {
-  "name": "tbd",
+  "name": "valiant-nervous-yoke",
   "version": "2021.12.0",
   "description": "Travis's Advent of Code 2021",
   "author": "Travis Hardiman",
-  "homepage": "https://tbd.glitch.me/",
+  "homepage": "https://valiant-nervous-yoke.glitch.me/",
   "main": "server.js",
   "scripts": {
     "test": "node --check server.js && semistandard && eslint server.js public/*.js",
@@ -12,12 +12,12 @@
   "dependencies": {
     "connect-timeout": "^1.9.0",
     "express": "^4.17.1",
-    "express-rate-limit": "^5.2.6",
+    "express-rate-limit": "^5.5.1",
     "semistandard": "^16.0.1",
-    "eslint": "^7.29.0"
+    "eslint": "^8.2.0"
   },
   "repository": {
-    "url": "https://glitch.com/edit/#!/tbd"
+    "url": "https://glitch.com/edit/#!/valiant-nervous-yoke"
   },
   "license": "Hippocratic-3.0",
   "keywords": [

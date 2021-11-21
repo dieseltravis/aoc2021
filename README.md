@@ -10,7 +10,12 @@ also on github: [dieseltravis/aoc2021](https://github.com/dieseltravis/aoc2021)
 
 [![Node.js CI](https://github.com/dieseltravis/aoc2021/actions/workflows/node.js.yml/badge.svg)](https://github.com/dieseltravis/aoc2021/actions/workflows/node.js.yml) [![Total alerts](https://img.shields.io/lgtm/alerts/g/dieseltravis/aoc2021.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/dieseltravis/aoc2021/alerts/) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/dieseltravis/aoc2021.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/dieseltravis/aoc2021/context:javascript)
 
-[![node dependencies](https://david-dm.org/dieseltravis/aoc2021.svg)](https://david-dm.org/dieseltravis/aoc2021) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdieseltravis%2Faoc2021.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdieseltravis%2Faoc2021?ref=badge_shield) [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?logo=javascript)](https://github.com/standard/semistandard)
+<!-- 
+broken:
+[![node dependencies](https://david-dm.org/dieseltravis/aoc2021.svg)](https://david-dm.org/dieseltravis/aoc2021)
+--> 
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdieseltravis%2Faoc2021.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdieseltravis%2Faoc2021?ref=badge_shield) [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?logo=javascript)](https://github.com/standard/semistandard)
 
 ## solutions:
 

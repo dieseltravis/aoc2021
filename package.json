@@ -14,10 +14,11 @@
   },
   "dependencies": {
     "connect-timeout": "^1.9.0",
+    "eslint": "^8.3.0",
     "express": "^4.17.1",
     "express-rate-limit": "^5.5.1",
     "semistandard": "^16.0.1",
-    "eslint": "^8.2.0"
+    "standard-engine": "^14.0.1"
   },
   "repository": {
     "url": "https://glitch.com/edit/#!/valiant-nervous-yoke"

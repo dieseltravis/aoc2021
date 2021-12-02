@@ -32,8 +32,54 @@
       }
     },
     day2: {
-      part1: () => {},
-      part2: () => {}
+      part1: (data) => {
+        const commands = data.trim().split('\n').map(command => command.split(' '));
+        let horiz = 0;
+        let depth = 0;
+
+        for (let i = 0, l = commands.length; i < l; i++) {
+          const action = commands[i][0];
+          const value = parseInt(commands[i][1], 10);
+          switch (action) {
+            case 'forward':
+              horiz += value;
+              break;
+            case 'up':
+              depth -= value;
+              break;
+            case 'down':
+              depth += value;
+              break;
+          }
+        }
+
+        return horiz * depth;
+      },
+      part2: (data) => {
+        const commands = data.trim().split('\n').map(command => command.split(' '));
+        let horiz = 0;
+        let depth = 0;
+        let aim = 0;
+
+        for (let i = 0, l = commands.length; i < l; i++) {
+          const action = commands[i][0];
+          const value = parseInt(commands[i][1], 10);
+          switch (action) {
+            case 'forward':
+              horiz += value;
+              depth += aim * value;
+              break;
+            case 'up':
+              aim -= value;
+              break;
+            case 'down':
+              aim += value;
+              break;
+          }
+        }
+
+        return horiz * depth;
+      }
     },
     day3: {
       part1: () => {},

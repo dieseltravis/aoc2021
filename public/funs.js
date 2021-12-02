@@ -3,8 +3,33 @@
 
   const all = {
     day1: {
-      part1: () => {},
-      part2: () => {}
+      part1: (data) => {
+        const list = data.trim().split('\n').map(Number);
+        const length = list.length;
+        let increased = 0;
+        for (let i = 1; i < length; i++) {
+          if (list[i] > list[i - 1]) {
+            increased++;
+          }
+        }
+        return increased;
+      },
+      part2: (data) => {
+        const list = data.trim().split('\n').map(Number);
+        const length = list.length;
+        const windows = [];
+        for (let i = 2; i < length; i++) {
+          windows.push(list[i] + list[i - 1] + list[i - 2]);
+        }
+        const windowLength = windows.length;
+        let increased = 0;
+        for (let i = 1; i < windowLength; i++) {
+          if (windows[i] > windows[i - 1]) {
+            increased++;
+          }
+        }
+        return increased;
+      }
     },
     day2: {
       part1: () => {},

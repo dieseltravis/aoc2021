@@ -17,12 +17,10 @@
       part2: (data) => {
         const list = data.trim().split('\n').map(Number);
         const length = list.length;
-        let windows = [];
+        const windows = [];
         for (let i = 2; i < length; i++) {
-          windows.push(list[i] + list[i - 1] + list[i - 2])
+          windows.push(list[i] + list[i - 1] + list[i - 2]);
         }
-        console.log(windows);
-        
         const windowLength = windows.length;
         let increased = 0;
         for (let i = 1; i < windowLength; i++) {
@@ -30,7 +28,6 @@
             increased++;
           }
         }
-        
         return increased;
       }
     },

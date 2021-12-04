@@ -191,9 +191,9 @@
             for (let c = 0; c < 5; c++) {
               for (let r = 0; r < 5; r++) {
                 if (draw === board[c][r]) {
-                  marked[b].dots["c" + c + "r" + r] = 1;
-                  marked[b]["c" + c]++;
-                  marked[b]["r" + r]++;
+                  marked[b].dots['c' + c + 'r' + r] = 1;
+                  marked[b]['c' + c]++;
+                  marked[b]['r' + r]++;
                 }
               }
             }
@@ -203,14 +203,14 @@
             for (let m = boardCount; m--;) {
               const mark = marked[m];
               for (let x = 5; x--;) {
-                if (mark["c" + x] === 5 || mark["r" + x] === 5) {
+                if (mark['c' + x] === 5 || mark['r' + x] === 5) {
                   // bingo in col or row x, sum unmarked numbers
                   const winner = boards[m];
-                  console.log("bingo!", draw, winner, mark);
+                  console.log('bingo!', draw, winner, mark);
                   let unmarked = 0;
                   for (let c = 0; c < 5; c++) {
                     for (let r = 0; r < 5; r++) {
-                      if (!mark.dots["c" + c + "r" + r]) {
+                      if (!mark.dots['c' + c + 'r' + r]) {
                         unmarked += winner[c][r];
                       }
                     }
@@ -255,9 +255,9 @@
               for (let c = 0; c < 5; c++) {
                 for (let r = 0; r < 5; r++) {
                   if (draw === board[c][r]) {
-                    marked[b].dots["c" + c + "r" + r] = 1;
-                    marked[b]["c" + c]++;
-                    marked[b]["r" + r]++;
+                    marked[b].dots['c' + c + 'r' + r] = 1;
+                    marked[b]['c' + c]++;
+                    marked[b]['r' + r]++;
                   }
                 }
               }
@@ -269,20 +269,20 @@
               const mark = marked[m];
               if (!mark.winner) {
                 for (let x = 5; x--;) {
-                  if (mark["c" + x] === 5 || mark["r" + x] === 5) {
+                  if (mark['c' + x] === 5 || mark['r' + x] === 5) {
                     // bingo in col or row x, sum unmarked numbers
                     mark.winner = 1;
                     lastWinner = mark;
                     winCount++;
                     console.log('#' + winCount, 'board:' + m);
-                    //if (winCount === boardCount) {
+                    if (winCount === boardCount) {
                       const winner = boards[m];
-                      console.log("bingo!", draw, winner, mark);
+                      console.log('bingo!', draw, winner, mark);
                       mark.draw = draw;
                       let unmarked = 0;
                       for (let c = 0; c < 5; c++) {
                         for (let r = 0; r < 5; r++) {
-                          if (!mark.dots["c" + c + "r" + r]) {
+                          if (!mark.dots['c' + c + 'r' + r]) {
                             unmarked += winner[c][r];
                           }
                         }
@@ -291,7 +291,7 @@
                       mark.sum = unmarked;
                       mark.result = unmarked * draw;
                       //return mark.result;
-                    //}
+                    }
                   }
                 }
               }
@@ -299,7 +299,7 @@
           }
         }
         // 13826 too low
-        return (lastWinner) ? lastWinner.result : "error";
+        return (lastWinner) ? lastWinner.result : 'error';
       }
     },
     day5: {

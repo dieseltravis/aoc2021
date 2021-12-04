@@ -264,11 +264,11 @@
         for (let d = 0; d < numberLength; d++) {
           const draw = numbers[d];
           for (let b = 0; b < boardCount; b++) {
-            const board = boards[b];
             const mark = marked[b];
             if (mark.winner !== 1) {
               for (let c = 0; c < 5; c++) {
                 for (let r = 0; r < 5; r++) {
+                  const board = boards[b];
                   if (draw === board[c][r]) {
                     marked[b].dots['c' + c + 'r' + r] = 1;
                     marked[b]['c' + c] += 1;
@@ -285,6 +285,7 @@
               if (mark.winner !== 1) {
                 for (let x = 0; x < 5; x++) {
                   if (mark['c' + x] === 5 || mark['r' + x] === 5) {
+                    console.log('bingo ' + m + ' count ' + winCount);
                     // bingo in col or row x, sum unmarked numbers
                     mark.winner = 1;
                     winCount += 1;
@@ -305,6 +306,7 @@
                       lastWinner = mark;
                       console.log('last bingo!', draw, winner, mark);
                     }
+                    break;
                     marked[m] = mark;
                   }
                 }

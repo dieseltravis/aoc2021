@@ -307,7 +307,6 @@
                       console.log('last bingo!', draw, winner, mark);
                     }
                     break;
-                    marked[m] = mark;
                   }
                 }
               }

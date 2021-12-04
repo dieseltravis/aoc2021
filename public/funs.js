@@ -96,19 +96,19 @@
             common[j][word[j]] += 1;
           }
         }
-        console.log(common);
+
         const maxs = common.reduce((acc, item, i) => {
           acc[i] = item.indexOf(Math.max.apply(Math, item));
           return acc;
         }, []);
-        console.log(maxs);
         const gamma = parseInt(maxs.join(''), 2);
+
         const mins = common.reduce((acc, item, i) => {
           acc[i] = item.indexOf(Math.min.apply(Math, item));
           return acc;
         }, []);
-        console.log(mins);
         const epsilon = parseInt(mins.join(''), 2);
+
         const val = gamma * epsilon;
         return val;
       },
@@ -127,6 +127,7 @@
           }
           return common;
         };
+
         let o2 = Array.from({ length: bitLength }, (v, i) => i);
         for (let b = 0; b < wordLength && o2.length > 1; b++) {
           const common = getCommon(bits.filter((v, i) => o2.includes(i)));
@@ -140,6 +141,7 @@
             o2 = o2.filter(val => bits[val][b] === 1);
           }
         }
+
         let co2 = Array.from({ length: bitLength }, (v, i) => i);
         for (let b = 0; b < wordLength && co2.length > 1; b++) {
           const common = getCommon(bits.filter((v, i) => co2.includes(i)));
@@ -152,19 +154,21 @@
             co2 = co2.filter(val => bits[val][b] === 0);
           }
         }
-        console.log(o2, co2);
+
         const o2bits = bits[o2[0]];
         const co2bits = bits[co2[0]];
-        console.log(o2bits, co2bits);
+
         const o2value = parseInt(o2bits.join(''), 2);
         const co2value = parseInt(co2bits.join(''), 2);
-        console.log(o2value, co2value);
+
         return o2value * co2value;
       }
     },
     day4: {
-      part1: () => {},
-      part2: () => {}
+      part1: () => {
+      },
+      part2: () => {
+      }
     },
     day5: {
       part1: () => {},

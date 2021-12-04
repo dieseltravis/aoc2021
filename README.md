@@ -22,8 +22,8 @@ broken:
 1. [day one](https://valiant-nervous-yoke.glitch.me/day/01)
 2. [day two](https://valiant-nervous-yoke.glitch.me/day/02)
 3. [day three](https://valiant-nervous-yoke.glitch.me/day/03)
-<!-- 
 4. [day four](https://valiant-nervous-yoke.glitch.me/day/04)
+<!-- 
 5. [day five](https://valiant-nervous-yoke.glitch.me/day/05)
 6. [day six](https://valiant-nervous-yoke.glitch.me/day/06)
 7. [day seven](https://valiant-nervous-yoke.glitch.me/day/07)

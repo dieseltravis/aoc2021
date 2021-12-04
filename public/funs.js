@@ -177,15 +177,13 @@
             // col counts
             c0: 0, c1: 0, c2: 0, c3: 0, c4: 0,
             // row counts
-            r0: 0, r1: 0, r2: 0, r3: 0, r4: 0,
-            // diagonals don't count
-            //dd: 0, du: 0
+            r0: 0, r1: 0, r2: 0, r3: 0, r4: 0
           };
         });
         console.log(marked);
         let bingo = 0;
         let result = 0;
-        const numberLength = numbers.length
+        const numberLength = numbers.length;
         for (let d = 0; d < numberLength && bingo === 0; d++) {
           const draw = numbers[d];
           for (let b = 0; b < boardCount; b++) {
@@ -226,7 +224,82 @@
         }
         return result;
       },
-      part2: () => {
+      part2: (data) => {
+        const input = data.trim().split('\n\n');
+        const numbers = input.shift().split(',').map(Number);
+        const boards = input.map(board => board.split('\n').map(row => row.trim().split(/\s+/).map(Number)));
+        const boardCount = boards.length;
+        console.log(numbers, boards);
+        const marked = Array.from({ length: boardCount}, () => { 
+          return {
+            dots: {},
+            winner: 0,
+            draw: 0,
+            sum: 0,
+            result: 0,
+            // col counts
+            c0: 0, c1: 0, c2: 0, c3: 0, c4: 0,
+            // row counts
+            r0: 0, r1: 0, r2: 0, r3: 0, r4: 0
+          };
+        });
+        let winCount = 0;
+        let lastWinner = null;
+        const numberLength = numbers.length;
+        for (let d = 0; d < numberLength && winCount < boardCount; d++) {
+          const draw = numbers[d];
+          for (let b = 0; b < boardCount; b++) {
+            const board = boards[b];
+            const mark = marked[b];
+            if (!mark.winner) {
+              for (let c = 0; c < 5; c++) {
+                for (let r = 0; r < 5; r++) {
+                  if (draw === board[c][r]) {
+                    marked[b].dots["c" + c + "r" + r] = 1;
+                    marked[b]["c" + c]++;
+                    marked[b]["r" + r]++;
+                  }
+                }
+              }
+            }
+          }
+          if (d >= 4) {
+            // check for bingo
+            for (let m = boardCount; m--;) {
+              const mark = marked[m];
+              if (!mark.winner) {
+                for (let x = 5; x--;) {
+                  if (mark["c" + x] === 5 || mark["r" + x] === 5) {
+                    // bingo in col or row x, sum unmarked numbers
+                    mark.winner = 1;
+                    lastWinner = mark;
+                    winCount++;
+                    console.log('#' + winCount, 'board:' + m);
+                    //if (winCount === boardCount) {
+                      const winner = boards[m];
+                      console.log("bingo!", draw, winner, mark);
+                      mark.draw = draw;
+                      let unmarked = 0;
+                      for (let c = 0; c < 5; c++) {
+                        for (let r = 0; r < 5; r++) {
+                          if (!mark.dots["c" + c + "r" + r]) {
+                            unmarked += winner[c][r];
+                          }
+                        }
+                      }
+                      console.log(unmarked);
+                      mark.sum = unmarked;
+                      mark.result = unmarked * draw;
+                      //return mark.result;
+                    //}
+                  }
+                }
+              }
+            }
+          }
+        }
+        // 13826 too low
+        return (lastWinner) ? lastWinner.result : "error";
       }
     },
     day5: {

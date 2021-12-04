@@ -82,7 +82,36 @@
       }
     },
     day3: {
-      part1: () => {},
+      part1: (data) => {
+        const bits = data.trim().split('\n').map(word => word.split('').map(Number));
+        let common = null;
+        const bitLength = bits.length;
+        for(let i = 0; i < bitLength; i++) {
+          const word = bits[i];
+          const wordLength = word.length;
+          if (i === 0) {
+            common = Array.from({length: wordLength}, () => [0,0]);
+          }
+          for(let j = 0; j < wordLength; j++) {
+            common[j][word[j]] += 1;
+          }
+        }
+        console.log(common);
+        const maxs = common.reduce((acc, item, i) => { 
+          acc[i] = item.indexOf(Math.max.apply(Math, item)); 
+          return acc; 
+        }, []);
+        console.log(maxs);
+        const gamma = parseInt(maxs.join(''), 2);
+        const mins = common.reduce((acc, item, i) => { 
+          acc[i] = item.indexOf(Math.min.apply(Math, item)); 
+          return acc; 
+        }, []);
+        console.log(mins);
+        const epsilon = parseInt(mins.join(''), 2);
+        const val = gamma * epsilon;
+        return val;
+      },
       part2: () => {}
     },
     day4: {

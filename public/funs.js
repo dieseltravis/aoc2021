@@ -112,7 +112,55 @@
         const val = gamma * epsilon;
         return val;
       },
-      part2: () => {}
+      part2: (data) => {
+        const bits = data.trim().split('\n').map(word => word.split('').map(Number));
+        const bitLength = bits.length;
+        const wordLength = bits[0].length;
+        const getCommon = function (bitArr) {
+          const bitArrLength = bitArr.length;
+          const common = Array.from({ length: wordLength }, () => [0, 0]);
+          for (let i = 0; i < bitArrLength; i++) {
+            const word = bitArr[i];
+            for (let j = 0; j < wordLength; j++) {
+              common[j][word[j]] += 1;
+            }
+          }
+          return common;
+        };
+        let o2 = Array.from({ length: bitLength }, (v, i) => i);
+        for (let b = 0; b < wordLength && o2.length > 1; b++) {
+          const common = getCommon(bits.filter((v, i) => o2.includes(i)));
+          const counts = common[b];
+          if (counts[0] > counts[1]) {
+            // find all that match in bit b
+            o2 = o2.filter(val => bits[val][b] === 0);
+          } else if (counts[0] < counts[1]) {
+            o2 = o2.filter(val => bits[val][b] === 1);
+          } else if (counts[0] === counts[1]) {
+            o2 = o2.filter(val => bits[val][b] === 1);
+          }
+        }
+        let co2 = Array.from({ length: bitLength }, (v, i) => i);
+        for (let b = 0; b < wordLength && co2.length > 1; b++) {
+          const common = getCommon(bits.filter((v, i) => co2.includes(i)));
+          const counts = common[b];
+          if (counts[0] > counts[1]) {
+            co2 = co2.filter(val => bits[val][b] === 1);
+          } else if (counts[0] < counts[1]) {
+            co2 = co2.filter(val => bits[val][b] === 0);
+          } else if (counts[0] === counts[1]) {
+            co2 = co2.filter(val => bits[val][b] === 0);
+          }
+        }
+        console.log(o2, co2);
+        const o2bits = bits[o2[0]];
+        const co2bits = bits[co2[0]];
+        console.log(o2bits, co2bits);
+        const o2value = parseInt(o2bits.join(''), 2);
+        const co2value = parseInt(co2bits.join(''), 2);
+        console.log(o2value, co2value);
+        return o2value * co2value;
+      }
     },
     day4: {
       part1: () => {},

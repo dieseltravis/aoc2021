@@ -319,8 +319,51 @@
       }
     },
     day5: {
-      part1: () => {},
-      part2: () => {}
+      part1: (data) => {
+        let max = {
+          x: 0,
+          y: 0
+        };
+        const input = data.trim().split('\n').map(row => {
+          let pairs = row.split(' -> ').map(pair => pair.split(',').map(Number));
+          const pair = {
+            x1: pairs[0][0],
+            y1: pairs[0][1],
+            x2: pairs[1][0],
+            y2: pairs[1][1]
+          };
+          max.x = Math.max(max.x, pair.x1, pair.x2);
+          max.y = Math.max(max.y, pair.y1, pair.y2);
+          return pair;
+        }).filter(pair => pair.x1 === pair.x2 || pair.y1 === pair.y2).map(pair => {
+          return {
+            x1: Math.min(pair.x1, pair.x2),
+            y1: Math.min(pair.y1, pair.y2),
+            x2: Math.max(pair.x1, pair.x2),
+            y2: Math.max(pair.y1, pair.y2)
+          };
+        });
+        let grid = Array.from({ length: max.y + 1 }, () => Array.from({ length: max.x + 1 }, () => 0));
+        input.forEach(pair => {
+          for (let y = pair.y1; y <= pair.y2; y++) {
+            for (let x = pair.x1; x <= pair.x2; x++) {
+              grid[y][x]++;
+            }
+          }
+        });
+
+        const result = grid.flatMap((row, yindex) => row.map((val, xindex) => {
+          return {
+            y: yindex,
+            x: xindex,
+            val: val
+          };
+        })).filter(point => point.val > 1);
+
+        return result.length;
+      },
+      part2: (data) => {
+      }
     },
     day6: {
       part1: () => {},

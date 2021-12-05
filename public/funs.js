@@ -320,12 +320,12 @@
     },
     day5: {
       part1: (data) => {
-        let max = {
+        const max = {
           x: 0,
           y: 0
         };
         const input = data.trim().split('\n').map(row => {
-          let pairs = row.split(' -> ').map(pair => pair.split(',').map(Number));
+          const pairs = row.split(' -> ').map(pair => pair.split(',').map(Number));
           const pair = {
             x1: pairs[0][0],
             y1: pairs[0][1],
@@ -343,7 +343,7 @@
             y2: Math.max(pair.y1, pair.y2)
           };
         });
-        let grid = Array.from({ length: max.y + 1 }, () => Array.from({ length: max.x + 1 }, () => 0));
+        const grid = Array.from({ length: max.y + 1 }, () => Array.from({ length: max.x + 1 }, () => 0));
         input.forEach(pair => {
           for (let y = pair.y1; y <= pair.y2; y++) {
             for (let x = pair.x1; x <= pair.x2; x++) {
@@ -363,12 +363,12 @@
         return result.length;
       },
       part2: (data) => {
-        let max = {
+        const max = {
           x: 0,
           y: 0
         };
         const input = data.trim().split('\n').map(row => {
-          let pairs = row.split(' -> ').map(pair => pair.split(',').map(Number));
+          const pairs = row.split(' -> ').map(pair => pair.split(',').map(Number));
           const pair = {
             x1: pairs[0][0],
             y1: pairs[0][1],
@@ -379,7 +379,7 @@
           max.y = Math.max(max.y, pair.y1, pair.y2);
           return pair;
         });
-        let grid = Array.from({ length: max.y + 1 }, () => Array.from({ length: max.x + 1 }, () => 0));
+        const grid = Array.from({ length: max.y + 1 }, () => Array.from({ length: max.x + 1 }, () => 0));
         input.forEach(pair => {
           let x = pair.x1;
           let y = pair.y1;

@@ -363,6 +363,56 @@
         return result.length;
       },
       part2: (data) => {
+        let max = {
+          x: 0,
+          y: 0
+        };
+        const input = data.trim().split('\n').map(row => {
+          let pairs = row.split(' -> ').map(pair => pair.split(',').map(Number));
+          const pair = {
+            x1: pairs[0][0],
+            y1: pairs[0][1],
+            x2: pairs[1][0],
+            y2: pairs[1][1]
+          };
+          max.x = Math.max(max.x, pair.x1, pair.x2);
+          max.y = Math.max(max.y, pair.y1, pair.y2);
+          return pair;
+        });
+        let grid = Array.from({ length: max.y + 1 }, () => Array.from({ length: max.x + 1 }, () => 0));
+        input.forEach(pair => {
+          let x = pair.x1;
+          let y = pair.y1;
+          let dx = 0;
+          if (x < pair.x2) {
+            dx = 1;
+          } else if (x > pair.x2) {
+            dx = -1;
+          }
+          let dy = 0;
+          if (y < pair.y2) {
+            dy = 1;
+          } else if (y > pair.y2) {
+            dy = -1;
+          }
+          // prevent infinite loops (it's late)
+          let safety = 1000;
+          do {
+            grid[y][x]++;
+            x += dx;
+            y += dy;
+          } while ((x !== pair.x2 + dx || y !== pair.y2 + dy) && safety-- > 0);
+        });
+
+        const result = grid.flatMap((row, yindex) => row.map((val, xindex) => {
+          return {
+            y: yindex,
+            x: xindex,
+            val: val
+          };
+        })).filter(point => point.val > 1);
+
+        return result.length;
       }
     },
     day6: {

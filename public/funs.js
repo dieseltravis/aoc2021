@@ -487,8 +487,8 @@
         const len = list.length;
         const distances = Array.from({ length: len }, () => 0);
         list.forEach((v1, i) => {
-          distances[i] = list.reduce((acc, v2) => acc + Math.abs(v1 - v2), 0))
-        };
+          distances[i] = list.reduce((acc, v2) => acc + Math.abs(v1 - v2), 0);
+        });
         const min = Math.min(...distances);
         return min;
       },
@@ -498,13 +498,13 @@
         const max = Math.max(...list);
         const fuel = Array.from({ length: max + 1 }, () => 0);
         fuel.forEach((v, i) => {
-          fuel[i] = i === 0 ? 0 : fuel[i - 1] + i)
-        };
+          fuel[i] = i === 0 ? 0 : fuel[i - 1] + i;
+        });
         const positions = Array.from({ length: max }, (e, i) => i);
         const distances = Array.from({ length: len }, () => 0);
         positions.forEach((v1, i) => {
-          distances[i] = list.reduce((acc, v2) => acc + fuel[Math.abs(v1 - v2)], 0))
-        };
+          distances[i] = list.reduce((acc, v2) => acc + fuel[Math.abs(v1 - v2)], 0);
+        });
         const min = Math.min(...distances);
         return min;
       }

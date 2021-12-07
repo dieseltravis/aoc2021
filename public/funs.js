@@ -416,8 +416,70 @@
       }
     },
     day6: {
-      part1: () => {},
-      part2: () => {}
+      part1: (data) => {
+        const list = data.trim().split(',').map(Number);
+        let days = 80;
+        let result = list.map(v => v);
+        while (days--) {
+          const temp = [];
+          let kids = 0;
+          result.forEach(v => {
+            if (v === 0) {
+              v = 6;
+              kids++;
+            } else {
+              v -= 1;
+            }
+            temp.push(v);
+          });
+          while (kids--) {
+            temp.push(8);
+          }
+          result = temp;
+        }
+        return result.length;
+      },
+      part2: (data) => {
+        const list = data.trim().split(',').map(Number);
+        let days = 256;
+        let counter = {
+          0: 0,
+          1: 0,
+          2: 0,
+          3: 0,
+          4: 0,
+          5: 0,
+          6: 0,
+          7: 0,
+          8: 0
+        };
+        list.forEach(v => {
+          counter[v]++;
+        });
+        while (days--) {
+          const temp = {
+            0: 0,
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 0,
+            5: 0,
+            6: counter[0],
+            7: 0,
+            8: counter[0]
+          };
+          temp[0] += counter[1];
+          temp[1] += counter[2];
+          temp[2] += counter[3];
+          temp[3] += counter[4];
+          temp[4] += counter[5];
+          temp[5] += counter[6];
+          temp[6] += counter[7];
+          temp[7] += counter[8];
+          counter = temp;
+        }
+        return counter[0] + counter[1] + counter[2] + counter[3] + counter[4] + counter[5] + counter[6] + counter[7] + counter[8];
+      }
     },
     day7: {
       part1: () => {},

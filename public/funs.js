@@ -482,7 +482,20 @@
       }
     },
     day7: {
-      part1: () => {},
+      part1: (data) => {
+        const list = data.trim().split(',').map(Number); // .sort((a, b) => a - b);
+        const len = list.length;
+        //const min = Math.min(...list);
+        //const max = Math.max(...list);
+        //const sum = list.reduce((acc, val) => acc + val, 0);
+        //const avg = sum / len;
+        //console.log(len, min, max, sum, avg);
+        //const sorted = list.sort((a, b) => Math.abs(avg - a) - Math.abs(avg - b));
+        const distances = Array.from({ length: len }, () => 0);
+        list.forEach((v1, i) => distances[i] = list.reduce((acc, v2) => acc + Math.abs(v1 - v2), 0));
+        const min = Math.min(...distances);
+        return min;
+      },
       part2: () => {}
     },
     day8: {

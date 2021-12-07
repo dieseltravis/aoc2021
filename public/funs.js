@@ -416,7 +416,30 @@
       }
     },
     day6: {
-      part1: () => {},
+      part1: (data) => {
+        const list = data.trim().split(',').map(Number);
+        let days = 80;
+        let result = list.map(v => v);
+        console.log(result);
+        while (days--) {
+          let temp = [];
+          let kids = 0;
+          result.forEach(v => {
+            if (v === 0) {
+              v = 6;
+              kids++;
+            } else {
+              v -= 1;
+            }
+            temp.push(v);
+          });
+          while (kids--) {
+            temp.push(8);
+          }
+          result = temp;
+        }
+        return result.length;
+      },
       part2: () => {}
     },
     day7: {

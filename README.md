@@ -6,7 +6,7 @@ my 2021 solutions on glitch: [valiant-nervous-yoke](https://valiant-nervous-yoke
 
 also on github: [dieseltravis/aoc2021](https://github.com/dieseltravis/aoc2021)
 
-[![Days completed in a row](https://img.shields.io/badge/⭐%20days%20in%20a%20row-6-blueviolet)](https://adventofcode.com/2021/) [![glitch](https://shields.io/badge/glitch-%F0%9F%91%8D%F0%9F%8E%8F-blue?logo=glitch&logoColor=violet)](https://glitch.com/)
+[![Days completed in a row](https://img.shields.io/badge/⭐%20days%20in%20a%20row-7-blueviolet)](https://adventofcode.com/2021/) [![glitch](https://shields.io/badge/glitch-%F0%9F%91%8D%F0%9F%8E%8F-blue?logo=glitch&logoColor=violet)](https://glitch.com/)
 
 [![Node.js CI](https://github.com/dieseltravis/aoc2021/actions/workflows/node.js.yml/badge.svg)](https://github.com/dieseltravis/aoc2021/actions/workflows/node.js.yml) [![Total alerts](https://img.shields.io/lgtm/alerts/g/dieseltravis/aoc2021.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/dieseltravis/aoc2021/alerts/) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/dieseltravis/aoc2021.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/dieseltravis/aoc2021/context:javascript)
 

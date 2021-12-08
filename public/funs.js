@@ -510,7 +510,91 @@
       }
     },
     day8: {
-      part1: () => {},
+      part1: (data) => {
+        let counter = 0;
+        const list = data.trim().split('\n').map(row => {
+          const pair = row.split(' | ').map(str => str.split(' '));
+          const entry = {
+            signal: pair[0].map(item => {
+              const pattern = item.split('').sort().join('');
+              const val = {
+                pattern: pattern,
+                digit: -1
+              };
+              switch (pattern.length) {
+                case 2: 
+                  val.digit = 1;
+                  break;
+                case 3: 
+                  val.digit = 7;
+                  break;
+                case 4: 
+                  val.digit = 4;
+                  break;
+                case 7: 
+                  val.digit = 8;
+                  break;
+              }
+              return val;
+            }),
+            value: pair[1].map(item => {
+              const pattern = item.split('').sort().join('');
+              const val = {
+                pattern: pattern,
+                digit: -1
+              };
+              switch (pattern.length) {
+                case 2: 
+                  val.digit = 1;
+                  counter++;
+                  break;
+                case 3: 
+                  val.digit = 7;
+                  counter++;
+                  break;
+                case 4: 
+                  val.digit = 4;
+                  counter++;
+                  break;
+                case 7: 
+                  val.digit = 8;
+                  counter++;
+                  break;
+              }
+              return val;
+            })
+          };
+          return entry;
+        });
+        console.log(list);
+        const digits = [
+          // 0
+          'abcefg',  // 6
+          // 1
+          'cf',      // 2*
+          // 2
+          'acdeg',   // 5
+          // 3
+          'acdfg',   // 5
+          // 4
+          'bcdf',    // 4*
+          // 5
+          'abdfg',   // 5
+          // 6
+          'abdefg',  // 6
+          // 7
+          'acf',     // 3*
+          // 8
+          'abcdefg', // 7*
+          // 9
+          'abcdfg'   // 6
+        ];
+        // use binary?
+        // //////////abcdefg
+        // parseInt('1111111', 2);
+        // not 800
+        return counter;
+      },
       part2: () => {}
     },
     day9: {

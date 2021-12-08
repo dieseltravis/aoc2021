@@ -512,21 +512,21 @@
     day8: {
       part1: (data) => {
         let counter = 0;
-        const list = data.trim().split('\n').forEach(row => {
+        data.trim().split('\n').forEach(row => {
           const pair = row.split(' | ').map(str => str.split(' '));
           pair[1].forEach(item => {
             const pattern = item.split('').sort().join('');
             switch (pattern.length) {
-              case 2: 
+              case 2:
                 counter++;
                 break;
-              case 3: 
+              case 3:
                 counter++;
                 break;
-              case 4: 
+              case 4:
                 counter++;
                 break;
-              case 7: 
+              case 7:
                 counter++;
                 break;
             }
@@ -548,16 +548,16 @@
               digit: -1
             };
             switch (pattern.length) {
-              case 2: 
+              case 2:
                 val.digit = 1; //   c  f
                 break;
-              case 3: 
+              case 3:
                 val.digit = 7; // a c  f
                 break;
-              case 4: 
+              case 4:
                 val.digit = 4; //  bcd f
                 break;
-              case 7: 
+              case 7:
                 val.digit = 8; // abcdefg
                 break;
             }
@@ -567,7 +567,7 @@
             1: signal.filter(item => item.digit === 1)[0],
             4: signal.filter(item => item.digit === 4)[0],
             7: signal.filter(item => item.digit === 7)[0],
-            8: signal.filter(item => item.digit === 8)[0],
+            8: signal.filter(item => item.digit === 8)[0]
           };
           const known = {
             a: digits[7].pattern.filter(char => !digits[1].pattern.includes(char))[0],
@@ -606,18 +606,15 @@
           digits[0].digit = 0;
           digits[6].digit = 6;
           digits[9].digit = 9;
-          console.log(digits);
           const mapped = {};
           for (let i = 0; i <= 9; i++) {
             mapped[digits[i].str] = i;
           }
-          console.log(mapped);
           const value = pair[1].map(item => {
             const key = item.split('').sort().join('');
-            const digit = mapped[key]; 
+            const digit = mapped[key];
             return digit;
           }).join('');
-          console.log(value);
           sum += parseInt(value, 10);
         });
         return sum;

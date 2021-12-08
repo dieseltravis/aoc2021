@@ -512,90 +512,116 @@
     day8: {
       part1: (data) => {
         let counter = 0;
-        const list = data.trim().split('\n').map(row => {
+        const list = data.trim().split('\n').forEach(row => {
           const pair = row.split(' | ').map(str => str.split(' '));
-          const entry = {
-            signal: pair[0].map(item => {
-              const pattern = item.split('').sort().join('');
-              const val = {
-                pattern: pattern,
-                digit: -1
-              };
-              switch (pattern.length) {
-                case 2: 
-                  val.digit = 1;
-                  break;
-                case 3: 
-                  val.digit = 7;
-                  break;
-                case 4: 
-                  val.digit = 4;
-                  break;
-                case 7: 
-                  val.digit = 8;
-                  break;
-              }
-              return val;
-            }),
-            value: pair[1].map(item => {
-              const pattern = item.split('').sort().join('');
-              const val = {
-                pattern: pattern,
-                digit: -1
-              };
-              switch (pattern.length) {
-                case 2: 
-                  val.digit = 1;
-                  counter++;
-                  break;
-                case 3: 
-                  val.digit = 7;
-                  counter++;
-                  break;
-                case 4: 
-                  val.digit = 4;
-                  counter++;
-                  break;
-                case 7: 
-                  val.digit = 8;
-                  counter++;
-                  break;
-              }
-              return val;
-            })
-          };
-          return entry;
+          pair[1].forEach(item => {
+            const pattern = item.split('').sort().join('');
+            switch (pattern.length) {
+              case 2: 
+                counter++;
+                break;
+              case 3: 
+                counter++;
+                break;
+              case 4: 
+                counter++;
+                break;
+              case 7: 
+                counter++;
+                break;
+            }
+          });
         });
-        console.log(list);
-        const digits = [
-          // 0
-          'abcefg',  // 6
-          // 1
-          'cf',      // 2*
-          // 2
-          'acdeg',   // 5
-          // 3
-          'acdfg',   // 5
-          // 4
-          'bcdf',    // 4*
-          // 5
-          'abdfg',   // 5
-          // 6
-          'abdefg',  // 6
-          // 7
-          'acf',     // 3*
-          // 8
-          'abcdefg', // 7*
-          // 9
-          'abcdfg'   // 6
-        ];
-        // use binary?
-        // //////////abcdefg
-        // parseInt('1111111', 2);
         // not 800
         return counter;
       },
-      part2: () => {}
+      part2: (data) => {
+        let sum = 0;
+        const list = data.trim().split('\n');
+        list.forEach(row => {
+          const pair = row.split(' | ').map(str => str.split(' '));
+          const signal = pair[0].map(item => {
+            const pattern = item.split('').sort();
+            const val = {
+              pattern: pattern,
+              str: pattern.join(''),
+              digit: -1
+            };
+            switch (pattern.length) {
+              case 2: 
+                val.digit = 1; //   c  f
+                break;
+              case 3: 
+                val.digit = 7; // a c  f
+                break;
+              case 4: 
+                val.digit = 4; //  bcd f
+                break;
+              case 7: 
+                val.digit = 8; // abcdefg
+                break;
+            }
+            return val;
+          });
+          const digits = {
+            1: signal.filter(item => item.digit === 1)[0],
+            4: signal.filter(item => item.digit === 4)[0],
+            7: signal.filter(item => item.digit === 7)[0],
+            8: signal.filter(item => item.digit === 8)[0],
+          };
+          const known = {
+            a: digits[7].pattern.filter(char => !digits[1].pattern.includes(char))[0],
+            bd: digits[4].pattern.filter(char => !digits[1].pattern.includes(char)),
+            cf: digits[1].pattern,
+            eg: digits[8].pattern.filter(char => !digits[4].pattern.includes(char) && !digits[7].pattern.includes(char))
+          };
+          // 2,3,5
+          const case5 = signal.filter(item => item.pattern.length === 5);
+          // all have adg
+          known.adg = case5[0].pattern.filter(char => case5[1].pattern.includes(char) && case5[1].pattern.includes(char));
+          known.b = known.bd.filter(char => !known.adg.includes(char))[0];
+          known.d = known.bd.filter(char => known.adg.includes(char))[0];
+          known.e = known.eg.filter(char => !known.adg.includes(char))[0];
+          known.g = known.eg.filter(char => known.adg.includes(char))[0];
+          // 23: c in 1478
+          // 35: f in 1478
+          digits[3] = case5.filter(item => known.cf.every(char => item.pattern.includes(char)))[0];
+          // 2:  e not in 147, in 8
+          digits[2] = case5.filter(item => item.pattern.includes(known.e))[0];
+          // 5:  b not in 17, in 48
+          digits[5] = case5.filter(item => item.pattern.includes(known.b))[0];
+          digits[2].digit = 2;
+          digits[3].digit = 3;
+          digits[5].digit = 5;
+          // 0,6,9
+          const case6 = signal.filter(item => item.pattern.length === 6);
+          // all have abfg
+          known.abfg = case6[0].pattern.filter(char => case6[1].pattern.includes(char) && case6[1].pattern.includes(char));
+          // 09: c in 1478
+          // 69: d
+          // 06: e not in 147, in 8
+          digits[0] = case6.filter(item => !item.pattern.includes(known.d))[0];
+          digits[9] = case6.filter(item => item.str !== digits[0].str && !item.pattern.includes(known.e))[0];
+          digits[6] = case6.filter(item => item.str !== digits[0].str && item.pattern.includes(known.e))[0];
+          digits[0].digit = 0;
+          digits[6].digit = 6;
+          digits[9].digit = 9;
+          console.log(digits);
+          const mapped = {};
+          for (let i = 0; i <= 9; i++) {
+            mapped[digits[i].str] = i;
+          }
+          console.log(mapped);
+          const value = pair[1].map(item => {
+            const key = item.split('').sort().join('');
+            const digit = mapped[key]; 
+            return digit;
+          }).join('');
+          console.log(value);
+          sum += parseInt(value, 10);
+        });
+        return sum;
+      }
     },
     day9: {
       part1: () => {},

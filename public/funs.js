@@ -692,7 +692,7 @@
           for (let x = 0; x < xmax; x++) {
             const height = list[y][x];
             const neighbors = getNeighbors(y, x);
-            let min = Math.min(...neighbors.map(n => n.height));
+            const min = Math.min(...neighbors.map(n => n.height));
             if (min > height) {
               lowest.push({
                 y: y,

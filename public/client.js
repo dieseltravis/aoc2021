@@ -1,5 +1,4 @@
 // import funs from "/funs.js";
-
 const process = function (funs, day, part) {
   const timer = 'day ' + day + ', part ' + part;
   const html = document.querySelector('html');

@@ -578,7 +578,7 @@
           // 2,3,5
           const case5 = signal.filter(item => item.pattern.length === 5);
           // all have adg
-          known.adg = case5[0].pattern.filter(char => case5[1].pattern.includes(char) && case5[1].pattern.includes(char));
+          known.adg = case5[0].pattern.filter(char => case5[1].pattern.includes(char) && case5[2].pattern.includes(char));
           known.b = known.bd.filter(char => !known.adg.includes(char))[0];
           known.d = known.bd.filter(char => known.adg.includes(char))[0];
           known.e = known.eg.filter(char => !known.adg.includes(char))[0];
@@ -586,26 +586,25 @@
           // 23: c in 1478
           // 35: f in 1478
           digits[3] = case5.filter(item => known.cf.every(char => item.pattern.includes(char)))[0];
+          digits[3].digit = 3;
           // 2:  e not in 147, in 8
           digits[2] = case5.filter(item => item.pattern.includes(known.e))[0];
+          digits[2].digit = 2;
           // 5:  b not in 17, in 48
           digits[5] = case5.filter(item => item.pattern.includes(known.b))[0];
-          digits[2].digit = 2;
-          digits[3].digit = 3;
           digits[5].digit = 5;
           // 0,6,9
           const case6 = signal.filter(item => item.pattern.length === 6);
           // all have abfg
-          known.abfg = case6[0].pattern.filter(char => case6[1].pattern.includes(char) && case6[1].pattern.includes(char));
           // 09: c in 1478
           // 69: d
           // 06: e not in 147, in 8
           digits[0] = case6.filter(item => !item.pattern.includes(known.d))[0];
-          digits[9] = case6.filter(item => item.str !== digits[0].str && !item.pattern.includes(known.e))[0];
-          digits[6] = case6.filter(item => item.str !== digits[0].str && item.pattern.includes(known.e))[0];
           digits[0].digit = 0;
-          digits[6].digit = 6;
+          digits[9] = case6.filter(item => item.str !== digits[0].str && !item.pattern.includes(known.e))[0];
           digits[9].digit = 9;
+          digits[6] = case6.filter(item => item.str !== digits[0].str && item.pattern.includes(known.e))[0];
+          digits[6].digit = 6;
           const mapped = {};
           for (let i = 0; i <= 9; i++) {
             mapped[digits[i].str] = i;

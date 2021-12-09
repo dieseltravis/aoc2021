@@ -12,9 +12,9 @@ console.log(PROJECT_URL);
 // run the same functions on the front & back
 const f = require('./public/funs');
 
-// set up rate limiter: maximum of ten requests per minute
+// set up rate limiter: maximum of 10 requests per second
 const limiter = new RateLimit({
-  windowMs: 1 * 60 * 1000, // 1 minute
+  windowMs: 1 * 10 * 1000, // 10 seconds
   max: 10
 });
 

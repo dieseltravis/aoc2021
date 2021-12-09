@@ -620,7 +620,37 @@
       }
     },
     day9: {
-      part1: () => {},
+      part1: (data) => {
+        const list = data.trim().split('\n').map(row => row.split('').map(Number));
+        const lowest = [];
+        const ymax = list.length;
+        for (let y = 0; y < ymax; y++) {
+          const xmax = list[y].length;
+          for (let x = 0; x < xmax; x++) {
+            const height = list[y][x];
+            let min = 99;
+            if (y > 0) { // N
+              min = Math.min(min, list[y - 1][x]);
+            }
+            if (y < ymax - 1) { // S
+              min = Math.min(min, list[y + 1][x]);
+            }
+            if (x > 0) { // W
+              min = Math.min(min, list[y][x - 1]);
+            }
+            if (x < xmax - 1) { // E
+              min = Math.min(min, list[y][x + 1]);
+            }
+            if (min > height) {
+              lowest.push(height);
+            }
+          }
+        }
+        console.log(lowest);
+        const result = lowest.reduce((acc, val) => acc + val, lowest.length);
+        // 1797 is too high
+        return result;
+      },
       part2: () => {}
     },
     day10: {

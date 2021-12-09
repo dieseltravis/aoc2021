@@ -72,4 +72,5 @@ also on github: [dieseltravis/aoc2018](https://github.com/dieseltravis/aoc2018)
 ╰(*°▽°*)╯
 
 ## License
+Hippocratic-3.0
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdieseltravis%2Faoc2021.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdieseltravis%2Faoc2021?ref=badge_large)

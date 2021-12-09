@@ -620,8 +620,117 @@
       }
     },
     day9: {
-      part1: () => {},
-      part2: () => {}
+      part1: (data) => {
+        const list = data.trim().split('\n').map(row => row.split('').map(Number));
+        const lowest = [];
+        const ymax = list.length;
+        for (let y = 0; y < ymax; y++) {
+          const xmax = list[y].length;
+          for (let x = 0; x < xmax; x++) {
+            const height = list[y][x];
+            let min = 99;
+            if (y > 0) { // N
+              min = Math.min(min, list[y - 1][x]);
+            }
+            if (y < ymax - 1) { // S
+              min = Math.min(min, list[y + 1][x]);
+            }
+            if (x > 0) { // W
+              min = Math.min(min, list[y][x - 1]);
+            }
+            if (x < xmax - 1) { // E
+              min = Math.min(min, list[y][x + 1]);
+            }
+            if (min > height) {
+              lowest.push(height);
+            }
+          }
+        }
+        const result = lowest.reduce((acc, val) => acc + val, lowest.length);
+        // 1797 is too high
+        return result;
+      },
+      part2: (data) => {
+        const list = data.trim().split('\n').map(row => row.split('').map(Number));
+        const lowest = [];
+        const basins = [];
+        const ymax = list.length;
+        const xmax = list[0].length;
+        const getNeighbors = (y, x) => { // Jim Nabors is way cool
+          const neighbors = [];
+          if (y > 0) { // N
+            neighbors.push({
+              y: y - 1,
+              x: x,
+              height: list[y - 1][x]
+            });
+          }
+          if (y < ymax - 1) { // S
+            neighbors.push({
+              y: y + 1,
+              x: x,
+              height: list[y + 1][x]
+            });
+          }
+          if (x > 0) { // W
+            neighbors.push({
+              y: y,
+              x: x - 1,
+              height: list[y][x - 1]
+            });
+          }
+          if (x < xmax - 1) { // E
+            neighbors.push({
+              y: y,
+              x: x + 1,
+              height: list[y][x + 1]
+            });
+          }
+          return neighbors;
+        };
+        for (let y = 0; y < ymax; y++) {
+          for (let x = 0; x < xmax; x++) {
+            const height = list[y][x];
+            const neighbors = getNeighbors(y, x);
+            const min = Math.min(...neighbors.map(n => n.height));
+            if (min > height) {
+              lowest.push({
+                y: y,
+                x: x,
+                height: height
+              });
+            }
+          }
+        }
+        const findHigher = (point) => {
+          const higher = [];
+          const neighbors = getNeighbors(point.y, point.x);
+          neighbors.forEach(n => {
+            if (n.height > point.height && n.height < 9) {
+              higher.push(n);
+              const next = findHigher(n);
+              if (next.length > 0) {
+                higher.push(...next);
+              }
+            }
+          });
+          return higher;
+        };
+        lowest.forEach(point => {
+          const basin = [point];
+          const higher = findHigher(point);
+          higher.forEach(h => {
+            if (!basin.some(p => p.y === h.y && p.x === h.x)) {
+              basin.push(h);
+            }
+          });
+          basins.push(basin);
+        });
+        const result = basins.sort((a, b) => b.length - a.length) // descending by length
+          .slice(0, 3) // top 3
+          .reduce((acc, basin) => acc * basin.length, 1); // multiply result
+        return result;
+      }
     },
     day10: {
       part1: () => {},

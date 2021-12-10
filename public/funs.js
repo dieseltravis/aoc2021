@@ -735,8 +735,6 @@
     day10: {
       part1: (data) => {
         const list = data.trim().split('\n').map(row => row.split(''));
-        console.log(list);
-        // positions for keeping score
         const i = { "(": 0, "[": 1, "{": 2, "<": 3, ")": 0, "]": 1, "}": 2, ">": 3 };
         // +1 for open,-1 for close
         const x = { "(": 1, "[": 1, "{": 1, "<": 1, ")": -1, "]": -1, "}": -1, ">": -1 };
@@ -748,7 +746,6 @@
           ">": 25137 
         };
         const score = list.reduce((acc, row) => {
-          //const counts = [ 0, 0, 0, 0];
           const stack = [];
           for(let c of row) {
             if (x[c] === 1) {
@@ -757,29 +754,54 @@
               if (stack[stack.length - 1] === pair[c]) {
                 stack.pop();
               } else {
-                console.log(stack, c);
                 acc += points[c];
                 break;
               }
             }
-            // wrong:
-            //const index = i[c];
-            //counts[index] += x[c];
-            //if (counts[index] < 0) {
-            //  // early closer, invalid
-            //  console.log("error on " + c);
-            //  acc += points[c];
-            //  return;
-            //}
           }
-          //console.log(counts);
           return acc;
         }, 0);
         return score;
       },
       part2: (data) => {
-        const list = data.trim().split('\n');
-        return null;
+        const list = data.trim().split('\n').map(row => row.split(''));
+        // +1 for open,-1 for close
+        const x = { "(": 1, "[": 1, "{": 1, "<": 1, ")": -1, "]": -1, "}": -1, ">": -1 };
+        const pair = { "(": ")", "[": "]", "{": "}", "<": ">", ")": "(", "]": "[", "}": "{", ">": "<" };
+        const points = {
+          ")": 1,
+          "]": 2,
+          "}": 3,
+          ">": 4 
+        };
+        const endings = list.reduce((acc, row) => {
+          const stack = [];
+          for(let c of row) {
+            if (x[c] === 1) {
+              stack.push(c);
+            } else {
+              if (stack[stack.length - 1] === pair[c]) {
+                stack.pop();
+              } else {
+                return acc;
+              }
+            }
+          }
+          const closers = [];
+          stack.reverse().forEach(c => closers.push(pair[c]));
+          acc.push(closers);
+          return acc;
+        }, []);
+        let scores = endings.reduce((acc, ends) => {
+          const lineScore = ends.reduce((sum, c) => {
+            const by5 = sum * 5;
+            return by5 + points[c];
+          }, 0);
+          acc.push(lineScore);
+          return acc;
+        }, []).sort((a, b) => a - b);
+        const mid = Math.floor(scores.length / 2)
+        return scores[mid];
       }
     },
     day11: {

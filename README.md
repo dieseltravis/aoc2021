@@ -28,8 +28,8 @@ broken:
 7. [day seven](https://valiant-nervous-yoke.glitch.me/day/07)
 8. [day eight](https://valiant-nervous-yoke.glitch.me/day/08)
 9. [day nine](https://valiant-nervous-yoke.glitch.me/day/09)
-<!-- 
 10. [day ten](https://valiant-nervous-yoke.glitch.me/day/10)
+<!-- 
 11. [day eleven](https://valiant-nervous-yoke.glitch.me/day/11)
 12. [day twelve](https://valiant-nervous-yoke.glitch.me/day/12)
 13. [day thirteen](https://valiant-nervous-yoke.glitch.me/day/13)

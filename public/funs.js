@@ -735,19 +735,19 @@
     day10: {
       part1: (data) => {
         const list = data.trim().split('\n').map(row => row.split(''));
-        const i = { "(": 0, "[": 1, "{": 2, "<": 3, ")": 0, "]": 1, "}": 2, ">": 3 };
+        const i = { '(': 0, '[': 1, '{': 2, '<': 3, ')': 0, ']': 1, '}': 2, '>': 3 };
         // +1 for open,-1 for close
-        const x = { "(": 1, "[": 1, "{": 1, "<": 1, ")": -1, "]": -1, "}": -1, ">": -1 };
-        const pair = { "(": ")", "[": "]", "{": "}", "<": ">", ")": "(", "]": "[", "}": "{", ">": "<" };
+        const x = { '(': 1, '[': 1, '{': 1, '<': 1, ')': -1, ']': -1, '}': -1, '>': -1 };
+        const pair = { '(': ')', '[': ']', '{': '}', '<': '>', ')': '(', ']': '[', '}': '{', '>': '<' };
         const points = {
-          ")": 3,
-          "]": 57,
-          "}": 1197,
-          ">": 25137 
+          ')': 3,
+          ']': 57,
+          '}': 1197,
+          '>': 25137
         };
         const score = list.reduce((acc, row) => {
           const stack = [];
-          for(let c of row) {
+          for (const c of row) {
             if (x[c] === 1) {
               stack.push(c);
             } else {
@@ -766,17 +766,17 @@
       part2: (data) => {
         const list = data.trim().split('\n').map(row => row.split(''));
         // +1 for open,-1 for close
-        const x = { "(": 1, "[": 1, "{": 1, "<": 1, ")": -1, "]": -1, "}": -1, ">": -1 };
-        const pair = { "(": ")", "[": "]", "{": "}", "<": ">", ")": "(", "]": "[", "}": "{", ">": "<" };
+        const x = { '(': 1, '[': 1, '{': 1, '<': 1, ')': -1, ']': -1, '}': -1, '>': -1 };
+        const pair = { '(': ')', '[': ']', '{': '}', '<': '>', ')': '(', ']': '[', '}': '{', '>': '<' };
         const points = {
-          ")": 1,
-          "]": 2,
-          "}": 3,
-          ">": 4 
+          ')': 1,
+          ']': 2,
+          '}': 3,
+          '>': 4
         };
         const endings = list.reduce((acc, row) => {
           const stack = [];
-          for(let c of row) {
+          for (const c of row) {
             if (x[c] === 1) {
               stack.push(c);
             } else {
@@ -792,7 +792,7 @@
           acc.push(closers);
           return acc;
         }, []);
-        let scores = endings.reduce((acc, ends) => {
+        const scores = endings.reduce((acc, ends) => {
           const lineScore = ends.reduce((sum, c) => {
             const by5 = sum * 5;
             return by5 + points[c];
@@ -800,7 +800,7 @@
           acc.push(lineScore);
           return acc;
         }, []).sort((a, b) => a - b);
-        const mid = Math.floor(scores.length / 2)
+        const mid = Math.floor(scores.length / 2);
         return scores[mid];
       }
     },

@@ -733,8 +733,75 @@
       }
     },
     day10: {
-      part1: () => {},
-      part2: () => {}
+      part1: (data) => {
+        const list = data.trim().split('\n').map(row => row.split(''));
+        // +1 for open,-1 for close
+        const x = { '(': 1, '[': 1, '{': 1, '<': 1, ')': -1, ']': -1, '}': -1, '>': -1 };
+        const pair = { '(': ')', '[': ']', '{': '}', '<': '>', ')': '(', ']': '[', '}': '{', '>': '<' };
+        const points = {
+          ')': 3,
+          ']': 57,
+          '}': 1197,
+          '>': 25137
+        };
+        const score = list.reduce((acc, row) => {
+          const stack = [];
+          for (const c of row) {
+            if (x[c] === 1) {
+              stack.push(c);
+            } else {
+              if (stack[stack.length - 1] === pair[c]) {
+                stack.pop();
+              } else {
+                acc += points[c];
+                break;
+              }
+            }
+          }
+          return acc;
+        }, 0);
+        return score;
+      },
+      part2: (data) => {
+        const list = data.trim().split('\n').map(row => row.split(''));
+        // +1 for open,-1 for close
+        const x = { '(': 1, '[': 1, '{': 1, '<': 1, ')': -1, ']': -1, '}': -1, '>': -1 };
+        const pair = { '(': ')', '[': ']', '{': '}', '<': '>', ')': '(', ']': '[', '}': '{', '>': '<' };
+        const points = {
+          ')': 1,
+          ']': 2,
+          '}': 3,
+          '>': 4
+        };
+        const endings = list.reduce((acc, row) => {
+          const stack = [];
+          for (const c of row) {
+            if (x[c] === 1) {
+              stack.push(c);
+            } else {
+              if (stack[stack.length - 1] === pair[c]) {
+                stack.pop();
+              } else {
+                return acc;
+              }
+            }
+          }
+          const closers = [];
+          stack.reverse().forEach(c => closers.push(pair[c]));
+          acc.push(closers);
+          return acc;
+        }, []);
+        const scores = endings.reduce((acc, ends) => {
+          const lineScore = ends.reduce((sum, c) => {
+            const by5 = sum * 5;
+            return by5 + points[c];
+          }, 0);
+          acc.push(lineScore);
+          return acc;
+        }, []).sort((a, b) => a - b);
+        const mid = Math.floor(scores.length / 2);
+        return scores[mid];
+      }
     },
     day11: {
       part1: () => {},

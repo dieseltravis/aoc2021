@@ -858,8 +858,58 @@
         return flashes;
       },
       part2: (data) => {
-        const list = data.trim().split('\n');
-        return null;
+        const octos = data.trim().split('\n').map(r => r.split('').map(Number));
+        const ymax = octos.length;
+        const xmax = octos[0].length;
+        const flash = (y, x) => {
+          const flashQueue = [];
+          const ys = [y - 1, y, y + 1].filter(yy => yy >= 0 && yy < ymax);
+          const xs = [x - 1, x, x + 1].filter(xx => xx >= 0 && xx < xmax);
+          for (const yy of ys) {
+            for (const xx of xs) {
+              if (yy !== y || xx !== x) {
+                if (octos[yy][xx] === 9) {
+                  flashQueue.push({ y: yy, x: xx});                
+                }
+                octos[yy][xx] += 1;
+              }
+            }
+          }
+          for (const f of flashQueue) {
+            flash(f.y, f.x);
+          }
+        };
+        const SAFETY = 1000;
+        let result = -1;
+        for (let i = 0; i < SAFETY; i++) {
+          const flashQueue = [];
+          for (let y = 0; y < ymax; y++) {
+            for (let x = 0; x < xmax; x++) {
+              if (octos[y][x] === 9) {
+                flashQueue.push({ y: y, x: x});
+              }
+              octos[y][x] += 1;
+            }
+          }
+          for (const f of flashQueue) {
+            flash(f.y, f.x);
+          }
+          for (let y = 0; y < ymax; y++) {
+            for (let x = 0; x < xmax; x++) {
+              if (octos[y][x] > 9) {
+                octos[y][x] = 0;
+              }
+            }
+          }
+          const str = octos.map(r => r.join('')).join('');
+          const matched = str.match(/[0]/g);
+          if (matched !== null && str.length === matched.length) {
+            result = i + 1;
+            break;
+          }
+        }
+        console.log(octos.map(r => r.join('')).join('\n'));
+        return result;
       }
     },
     day12: {

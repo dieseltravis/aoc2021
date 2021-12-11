@@ -810,9 +810,7 @@
         const xmax = octos[0].length;
         const steps = 100;
         let flashes = 0;
-        let flash2 = 0;
         const flash = (y, x) => {
-          //console.log(y, x, octos[y][x]);
           flashes++;
           const flashQueue = [];
           const ys = [y - 1, y, y + 1].filter(yy => yy >= 0 && yy < ymax);
@@ -821,7 +819,7 @@
             for (const xx of xs) {
               if (yy !== y || xx !== x) {
                 if (octos[yy][xx] === 9) {
-                  flashQueue.push({ y: yy, x: xx});                
+                  flashQueue.push({ y: yy, x: xx });
                 }
                 octos[yy][xx] += 1;
               }
@@ -836,7 +834,7 @@
           for (let y = 0; y < ymax; y++) {
             for (let x = 0; x < xmax; x++) {
               if (octos[y][x] === 9) {
-                flashQueue.push({ y: y, x: x});
+                flashQueue.push({ y: y, x: x });
               }
               octos[y][x] += 1;
             }
@@ -848,13 +846,10 @@
             for (let x = 0; x < xmax; x++) {
               if (octos[y][x] > 9) {
                 octos[y][x] = 0;
-                flash2++;
               }
             }
           }
         }
-        console.log(octos.map(r => r.join('')).join('\n'));
-        console.log(flash2);
         return flashes;
       },
       part2: (data) => {
@@ -869,7 +864,7 @@
             for (const xx of xs) {
               if (yy !== y || xx !== x) {
                 if (octos[yy][xx] === 9) {
-                  flashQueue.push({ y: yy, x: xx});                
+                  flashQueue.push({ y: yy, x: xx });
                 }
                 octos[yy][xx] += 1;
               }
@@ -886,7 +881,7 @@
           for (let y = 0; y < ymax; y++) {
             for (let x = 0; x < xmax; x++) {
               if (octos[y][x] === 9) {
-                flashQueue.push({ y: y, x: x});
+                flashQueue.push({ y: y, x: x });
               }
               octos[y][x] += 1;
             }
@@ -908,7 +903,6 @@
             break;
           }
         }
-        console.log(octos.map(r => r.join('')).join('\n'));
         return result;
       }
     },

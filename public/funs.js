@@ -907,8 +907,40 @@
       }
     },
     day12: {
-      part1: () => {},
-      part2: () => {}
+      part1: (data) => {
+        const list = data.trim().split('\n').map(r => r.split('-'));
+        const caves = list.reduce((acc, pair) => {
+          const a = pair[0];
+          const b = pair[1];
+          if (typeof acc[a] === 'undefined') {
+            acc[a] = {
+              cave: a,
+              isBig: a === a.toUpperCase(),
+              visited: false,
+              doors: [b]
+            };
+          } else {
+            acc[a].doors.push(b);
+          }
+          if (typeof acc[b] === 'undefined') {
+            acc[b] = {
+              cave: b,
+              isBig: b === b.toUpperCase(),
+              visited: false,
+              doors: [a]
+            };
+          } else {
+            acc[b].doors.push(a);
+          }
+          return acc;
+        }, {});
+        console.log(caves);
+        
+        return null;
+      },
+      part2: () => {
+        
+      }
     },
     day13: {
       part1: () => {},

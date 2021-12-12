@@ -915,9 +915,10 @@
           if (typeof acc[a] === 'undefined') {
             acc[a] = {
               cave: a,
-              isBig: a === a.toUpperCase(),
+              isBig: a === a.toUpperCase(), // || a === 'start' || a === 'end'
               visited: false,
-              doors: [b]
+              doors: [b],
+              last: -1
             };
           } else {
             acc[a].doors.push(b);
@@ -925,9 +926,10 @@
           if (typeof acc[b] === 'undefined') {
             acc[b] = {
               cave: b,
-              isBig: b === b.toUpperCase(),
+              isBig: b === b.toUpperCase(), // || b === 'start' || b === 'end'
               visited: false,
-              doors: [a]
+              doors: [a],
+              last: -1
             };
           } else {
             acc[b].doors.push(a);
@@ -935,11 +937,30 @@
           return acc;
         }, {});
         console.log(caves);
-        
-        return null;
+        const routes = [];
+        const start = caves.start;
+        const end = caves.end;
+        // TODO: start at start, end at end
+        let node = start;
+        let safety = 1000;
+        let path = '';
+        while (node.cave !== 'end' && safety--) {
+          path += node.cave;
+          //if (!node.isBig) {
+          //  node.visited = true;
+          //}
+          while (node.cave !== 'start' && node.last < node.doors.length) {
+            node.last++;
+            const next = caves[node.doors[node.last]];
+            //
+            node = next;
+          }
+        }
+        console.log(path);
+        console.log(safety);
+        return routes.length;
       },
       part2: () => {
-        
       }
     },
     day13: {

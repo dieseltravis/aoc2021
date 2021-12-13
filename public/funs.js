@@ -932,14 +932,14 @@
           if (c.doors.length) {
             output += ' => ' + c.doors.join(',');
           }
-          return output
+          return output;
         }).join('\n'));
         const routes = [];
         const start = caves.start;
         let node = start;
         let safety = 1000;
 
-        let path = [];
+        const path = [];
         while (node.cave !== 'end' && safety--) {
           path.push(node.cave);
           for (let i = 0; i < node.doors.length; i++) {

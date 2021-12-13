@@ -909,55 +909,52 @@
     day12: {
       part1: (data) => {
         const list = data.trim().split('\n').map(r => r.split('-'));
+        const addCave = (arr, a, b) => {
+          if (typeof arr[a] === 'undefined') {
+            arr[a] = {
+              cave: a,
+              isBig: a === a.toUpperCase(),
+              doors: [b]
+            };
+          } else {
+            arr[a].doors.push(b);
+          }
+        };
         const caves = list.reduce((acc, pair) => {
           const a = pair[0];
           const b = pair[1];
-          if (typeof acc[a] === 'undefined') {
-            acc[a] = {
-              cave: a,
-              isBig: a === a.toUpperCase(), // || a === 'start' || a === 'end'
-              visited: false,
-              doors: [b],
-              last: -1
-            };
-          } else {
-            acc[a].doors.push(b);
-          }
-          if (typeof acc[b] === 'undefined') {
-            acc[b] = {
-              cave: b,
-              isBig: b === b.toUpperCase(), // || b === 'start' || b === 'end'
-              visited: false,
-              doors: [a],
-              last: -1
-            };
-          } else {
-            acc[b].doors.push(a);
-          }
+          addCave(acc, a, b);
+          addCave(acc, b, a);
           return acc;
         }, {});
-        console.log(caves);
+        console.log(Object.values(caves).map(c => {
+          let output = c.cave;
+          if (c.doors.length) {
+            output += ' => ' + c.doors.join(',');
+          }
+          return output
+        }).join('\n'));
         const routes = [];
         const start = caves.start;
-        const end = caves.end;
-        // TODO: start at start, end at end
         let node = start;
         let safety = 1000;
-        let path = '';
+
+        let path = [];
         while (node.cave !== 'end' && safety--) {
-          path += node.cave;
-          //if (!node.isBig) {
-          //  node.visited = true;
-          //}
-          while (node.cave !== 'start' && node.last < node.doors.length) {
-            node.last++;
-            const next = caves[node.doors[node.last]];
-            //
-            node = next;
+          path.push(node.cave);
+          for (let i = 0; i < node.doors.length; i++) {
+            const next = caves[node.doors[i]];
+            if (next.isBig || !path.some(n => n === next.cave)) {
+              node = next;
+              break;
+            }
           }
         }
+        path.push('end');
         console.log(path);
         console.log(safety);
+        routes.push(path.join(''));
+
         return routes.length;
       },
       part2: () => {

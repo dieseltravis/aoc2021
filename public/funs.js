@@ -914,10 +914,12 @@
             arr[a] = {
               cave: a,
               isBig: a === a.toUpperCase(),
-              doors: [b]
+              doors: [b],
+              paths: [a + b]
             };
           } else {
             arr[a].doors.push(b);
+            arr[a].paths.push(a + b);
           }
         };
         const caves = list.reduce((acc, pair) => {
@@ -927,20 +929,70 @@
           addCave(acc, b, a);
           return acc;
         }, {});
-        console.log(Object.values(caves).map(c => {
+        const allCaves = Object.values(caves);
+        console.log(allCaves.map(c => {
           let output = c.cave;
           if (c.doors.length) {
             output += ' => ' + c.doors.join(',');
           }
+          if (c.paths.length) {
+            //output += ' => ' + c.paths.join(',');
+          }
           return output;
         }).join('\n'));
-        const routes = [];
-        const start = caves.start;
-        let node = start;
+        const routes = [['start']];
+        const paths = ['start'];
         let safety = 1000;
-
-        const path = [];
-        while (node.cave !== 'end' && safety--) {
+        const process = (doors) => {
+          const rl = routes.length;
+          for (let i = 0; i < rl && safety-- > 0; i++) {
+            const route = routes[i].slice();
+            console.log(route);
+            const remainDoors = doors.filter(d => (caves[d].isBig || !route.includes(d)));
+            console.log(remainDoors);
+            const dl = remainDoors.length;
+            for (let j = 0; j < dl && safety-- > 0; j++) {
+              const cave = caves[remainDoors[j]];
+              let path = paths[i];
+              route.push(cave.cave);
+              path += cave.cave;
+              if (!paths.includes(path)) {
+                paths.push(path);
+                // add new route to end
+                routes.push(route);
+              }
+              console.log(paths);
+              if (cave.cave !== 'end') {
+                process(cave.doors);
+              }
+            }
+          }  
+        };
+        //process(caves.start.doors);
+        const getPaths = (cave, cpaths) => {
+          if (cave.cave === 'end') {
+            return cpaths;
+          }
+          const pl = cpaths.length;
+          const dl = cave.doors.length;
+          let newpaths = [];
+          for (let p = 0; p < pl; p++) {
+            const pp = cpaths[p];
+            if (cave.isBig || !pp.includes(cave.cave)) {
+              pp.push(cave.cave);
+            }
+          }
+          console.log(cpaths);
+          for (let d = 0; d < dl; d++) {
+            const child = caves[cave.doors[d]];
+            // todo: fix recursion
+            //newpaths = newpaths.concat(getPaths(child, cpaths.slice()));
+          }
+          return newpaths;
+        };
+        console.log(getPaths(caves.start, []));
+        
+        /*while (node.cave !== 'end' && safety--) {
           path.push(node.cave);
           for (let i = 0; i < node.doors.length; i++) {
             const next = caves[node.doors[i]];
@@ -949,11 +1001,11 @@
               break;
             }
           }
-        }
-        path.push('end');
-        console.log(path);
+        }*/
+        //path.push('end');
+        console.log(routes);
         console.log(safety);
-        routes.push(path.join(''));
+        //routes.push(path.join(''));
 
         return routes.length;
       },

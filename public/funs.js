@@ -1085,7 +1085,59 @@
         const result = grid.map(r => r.map(v => v > 0 ? '1' : '').join('')).join('').length;
         return result
       },
-      part2: () => {}
+      part2: (data) => {
+        const input = data.trim().split('\n\n');
+        const coords = input[0].split('\n').map(r => r.split(',').map(Number)).map(r => {
+          return { x: r[0], y: r[1] };
+        });
+        const folds = input[1].split('\n').map(r => r.split(' ')[2].split('=')).map(r => {
+          return { axis: r[0], value: parseInt(r[1], 10) };
+        });
+        //console.log(coords, folds);
+        const coordsLength = coords.length;
+        const xMax = Math.max(...coords.map(p => p.x));
+        const yMax = Math.max(...coords.map(p => p.y));
+        const grid = Array.from({ length: yMax + 1 }, () => Array.from({ length: xMax + 1 }, () => 0));
+        for (let i = 0; i < coordsLength; i++) {
+          const point = coords[i];
+          grid[point.y][point.x]++;
+        }
+        console.log(grid.map(r => r.map(v => v > 0 ? '#' : '.').join(' ')).join('\n'));
+        for (let f = 0; f < folds.length; f++) {
+          const firstFold = folds[f];
+          if (firstFold.axis === 'y') {
+            for (let y = firstFold.value; y <= yMax; y++) {
+              const dy = firstFold.value - y;
+              const yy = firstFold.value + dy;
+              for (let x = 0; x <= xMax; x++) {
+                if (dy < 0) {
+                  const p = grid[y][x];
+                  if (p > 0) {
+                    grid[yy][x] += p;
+                  }
+                }
+                grid[y][x] = 0;
+              }
+            }
+          } else if (firstFold.axis === 'x') {
+            for (let y = 0; y <= yMax; y++) {
+              for (let x = firstFold.value; x <= xMax; x++) {
+                const dx = firstFold.value - x;
+                const xx = firstFold.value + dx;
+                if (dx < 0) {
+                  const p = grid[y][x];
+                  if (p > 0) {
+                    grid[y][xx] += p;
+                  }
+                }
+                grid[y][x] = 0;
+              }
+            }
+          }
+        }
+        console.log(grid.map(r => r.map(v => v > 0 ? '#' : '.').join(' ').replace(/(\s?\.)+$/g, '')).join('\n').replace(/\n\n/g, ''));
+        return 'look in console';
+      }
     },
     day14: {
       part1: () => {},

@@ -166,7 +166,7 @@
     },
     day4: {
       part1: (data) => {
-        const input = data.trim().split('\n\n');
+        const input = data.trim().split(/\r?\n\r?\n/);
         const numbers = input.shift().split(',').map(Number);
         const boards = input.map(board => board.split('\n').map(row => row.trim().split(/\s+/).map(Number)));
         const boardCount = boards.length;
@@ -232,7 +232,7 @@
         return 'error';
       },
       part2: (data) => {
-        const input = data.trim().split('\n\n');
+        const input = data.trim().split(/\r?\n\r?\n/);
         const numbers = input.shift().split(',').map(Number);
         const numberLength = numbers.length;
         const boards = input.map(board => board.split('\n').map(row => row.trim().split(/\s+/).map(Number)));
@@ -1022,7 +1022,7 @@
     },
     day13: {
       part1: (data) => {
-        const input = data.trim().split('\n\n');
+        const input = data.trim().split(/\r?\n\r?\n/);
         const coords = input[0].split('\n').map(r => r.split(',').map(Number)).map(r => {
           return { x: r[0], y: r[1] };
         });
@@ -1073,7 +1073,7 @@
         return result;
       },
       part2: (data) => {
-        const input = data.trim().split('\n\n');
+        const input = data.trim().split(/\r?\n\r?\n/);
         const coords = input[0].split('\n').map(r => r.split(',').map(Number)).map(r => {
           return { x: r[0], y: r[1] };
         });
@@ -1127,7 +1127,7 @@
     },
     day14: {
       part1: (data) => {
-        const input = data.trim().split('\n\n');
+        const input = data.trim().split(/\r?\n\r?\n/);
         let template = input[0];
         const chars = input[1].split('\n').reduce((acc, p) => {
           const pair = p.split(' -> ');

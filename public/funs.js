@@ -1227,7 +1227,58 @@
       }
     },
     day15: {
-      part1: () => {},
+      part1: (data) => {
+        const grid = data.split('\n').map(r => r.split('').map(Number));
+        //console.log(grid);
+        const ymax = grid.length;
+        const xmax = grid[0].length;
+        // find min value going from 0,0 to ymax, xmax
+        const start = { y: 0, x: 0, v: grid[0][0] };
+        const end = { y: ymax - 1, x: xmax - 1, v: grid[ymax - 1][xmax - 1] };
+        const getPaths = (point, path) => {
+          if (point.y === end.y && point.x === end.x) {
+            path.push(end);
+            return [path];
+          }
+          if (!path.some(p => p.y === point.y && p.x === point.x)) {
+            const steps = [];
+            // no diagonals!
+            if (point.y > 0) {
+              steps.push({ y: point.y - 1, x: point.x });
+            }
+            if (point.y < ymax - 1) {
+              steps.push({ y: point.y + 1, x: point.x });
+            }
+            if (point.x > 0) {
+              steps.push({ y: point.y, x: point.x - 1 });
+            }
+            if (point.x < xmax - 1) {
+              steps.push({ y: point.y, x: point.x + 1 });
+            }
+            const stepLength = steps.length;
+            let newpaths = [];
+            path.push(point);
+            for (let i = 0; i < stepLength; i++) {
+              const step = steps[i];
+              if (!(step.y === point.y && step.x === point.x) && !path.some(p => p.y === step.y && p.x === step.x)) {
+                step.v = grid[step.y][step.x];
+                newpaths = newpaths.concat(getPaths(step, path.slice()));
+              }
+            }
+            return newpaths;
+          }
+          return [];
+        };
+        const routes = getPaths(start, []);
+        //console.log(routes);
+        const sums = routes.reduce((acc, path) => {
+          const sum = path.reduce((acc2, point) => acc2 + point.v, 0);
+          acc.push(sum);
+          return acc;
+        }, []);
+        console.log(sums);
+        return Math.min(...sums);
+      },
       part2: () => {}
     },
     day16: {

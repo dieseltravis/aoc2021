@@ -166,7 +166,7 @@
     },
     day4: {
       part1: (data) => {
-        const input = data.trim().split('\n\n');
+        const input = data.trim().split(/\r?\n\r?\n/);
         const numbers = input.shift().split(',').map(Number);
         const boards = input.map(board => board.split('\n').map(row => row.trim().split(/\s+/).map(Number)));
         const boardCount = boards.length;
@@ -232,7 +232,7 @@
         return 'error';
       },
       part2: (data) => {
-        const input = data.trim().split('\n\n');
+        const input = data.trim().split(/\r?\n\r?\n/);
         const numbers = input.shift().split(',').map(Number);
         const numberLength = numbers.length;
         const boards = input.map(board => board.split('\n').map(row => row.trim().split(/\s+/).map(Number)));
@@ -907,16 +907,292 @@
       }
     },
     day12: {
-      part1: () => {},
-      part2: () => {}
+      part1: (data) => {
+        const list = data.trim().split('\n').map(r => r.split('-'));
+        let id = 0;
+        const addCave = (arr, a, b) => {
+          if (typeof arr[a] === 'undefined') {
+            arr[a] = {
+              id: id++,
+              cave: a,
+              isBig: a === a.toUpperCase(),
+              doors: [b]
+            };
+          } else {
+            arr[a].doors.push(b);
+          }
+        };
+        const caves = list.reduce((acc, pair) => {
+          const a = pair[0];
+          const b = pair[1];
+          addCave(acc, a, b);
+          addCave(acc, b, a);
+          return acc;
+        }, {});
+        const allCaves = Object.values(caves);
+        console.log(allCaves.map(c => {
+          let output = c.cave + '(' + c.id + ')';
+          if (c.doors.length) {
+            output += ' => ' + c.doors.join(',');
+          }
+          return output;
+        }).join('\n'));
+        const getPaths = (cave, path) => {
+          if (cave.cave === 'end') {
+            path.push('end');
+            return [path];
+          }
+          if (cave.isBig || !path.includes(cave.cave)) {
+            const dl = cave.doors.length;
+            let newpaths = [];
+            path.push(cave.cave);
+            for (let i = 0; i < dl; i++) {
+              const child = caves[cave.doors[i]];
+              newpaths = newpaths.concat(getPaths(child, path.slice()));
+            }
+            return newpaths;
+          }
+          return [];
+        };
+        const routes = getPaths(caves.start, []);
+        return routes.length;
+      },
+      part2: (data) => {
+        const list = data.trim().split('\n').map(r => r.split('-'));
+        let id = 0;
+        const addCave = (arr, a, b) => {
+          if (typeof arr[a] === 'undefined') {
+            arr[a] = {
+              id: id++,
+              cave: a,
+              isBig: a === a.toUpperCase(),
+              doors: [b]
+            };
+          } else {
+            arr[a].doors.push(b);
+          }
+        };
+        const caves = list.reduce((acc, pair) => {
+          const a = pair[0];
+          const b = pair[1];
+          addCave(acc, a, b);
+          addCave(acc, b, a);
+          return acc;
+        }, {});
+        const allCaves = Object.values(caves);
+        console.log(allCaves.map(c => {
+          let output = c.cave + '(' + c.id + ')';
+          if (c.doors.length) {
+            output += ' => ' + c.doors.join(',');
+          }
+          return output;
+        }).join('\n'));
+        const getPaths = (cave, path) => {
+          if (cave.cave === 'end') {
+            path.path.push('end');
+            return [path];
+          } else if (cave.isBig || !path.path.includes(cave.cave)) {
+            const dl = cave.doors.length;
+            let newpaths = [];
+            path.path.push(cave.cave);
+            for (let i = 0; i < dl; i++) {
+              const child = caves[cave.doors[i]];
+              newpaths = newpaths.concat(getPaths(child, { treat: path.treat, path: path.path.slice() }));
+            }
+            return newpaths;
+          } else if (cave.cave !== 'start' && path.treat === 0) {
+            // let a little cave have a treat
+            path.treat = 1;
+            const dl = cave.doors.length;
+            let newpaths = [];
+            path.path.push(cave.cave);
+            for (let i = 0; i < dl; i++) {
+              const child = caves[cave.doors[i]];
+              newpaths = newpaths.concat(getPaths(child, { treat: path.treat, path: path.path.slice() }));
+            }
+            return newpaths;
+          }
+          return [];
+        };
+        const routes = getPaths(caves.start, { treat: 0, path: [] });
+        return routes.length;
+      }
     },
     day13: {
-      part1: () => {},
-      part2: () => {}
+      part1: (data) => {
+        const input = data.trim().split(/\r?\n\r?\n/);
+        const coords = input[0].split('\n').map(r => r.split(',').map(Number)).map(r => {
+          return { x: r[0], y: r[1] };
+        });
+        const folds = input[1].split('\n').map(r => r.split(' ')[2].split('=')).map(r => {
+          return { axis: r[0], value: parseInt(r[1], 10) };
+        });
+        const coordsLength = coords.length;
+        const xMax = Math.max(...coords.map(p => p.x));
+        const yMax = Math.max(...coords.map(p => p.y));
+        const grid = Array.from({ length: yMax + 1 }, () => Array.from({ length: xMax + 1 }, () => 0));
+        for (let i = 0; i < coordsLength; i++) {
+          const point = coords[i];
+          grid[point.y][point.x]++;
+        }
+        console.log(grid.map(r => r.map(v => v > 0 ? '#' : '.').join(' ')).join('\n'));
+        const firstFold = folds[0];
+        if (firstFold.axis === 'y') {
+          for (let y = firstFold.value; y <= yMax; y++) {
+            const dy = firstFold.value - y;
+            const yy = firstFold.value + dy;
+            for (let x = 0; x <= xMax; x++) {
+              if (dy < 0) {
+                const p = grid[y][x];
+                if (p > 0) {
+                  grid[yy][x] += p;
+                }
+              }
+              grid[y][x] = 0;
+            }
+          }
+        } else if (firstFold.axis === 'x') {
+          for (let y = 0; y <= yMax; y++) {
+            for (let x = firstFold.value; x <= xMax; x++) {
+              const dx = firstFold.value - x;
+              const xx = firstFold.value + dx;
+              if (dx < 0) {
+                const p = grid[y][x];
+                if (p > 0) {
+                  grid[y][xx] += p;
+                }
+              }
+              grid[y][x] = 0;
+            }
+          }
+        }
+        console.log(grid.map(r => r.map(v => v > 0 ? '#' : '.').join(' ')).join('\n'));
+        const result = grid.map(r => r.map(v => v > 0 ? '1' : '').join('')).join('').length;
+        return result;
+      },
+      part2: (data) => {
+        const input = data.trim().split(/\r?\n\r?\n/);
+        const coords = input[0].split('\n').map(r => r.split(',').map(Number)).map(r => {
+          return { x: r[0], y: r[1] };
+        });
+        const folds = input[1].split('\n').map(r => r.split(' ')[2].split('=')).map(r => {
+          return { axis: r[0], value: parseInt(r[1], 10) };
+        });
+        const coordsLength = coords.length;
+        const xMax = Math.max(...coords.map(p => p.x));
+        const yMax = Math.max(...coords.map(p => p.y));
+        const grid = Array.from({ length: yMax + 1 }, () => Array.from({ length: xMax + 1 }, () => 0));
+        for (let i = 0; i < coordsLength; i++) {
+          const point = coords[i];
+          grid[point.y][point.x]++;
+        }
+        console.log(grid.map(r => r.map(v => v > 0 ? '#' : '.').join(' ')).join('\n'));
+        for (let f = 0; f < folds.length; f++) {
+          const firstFold = folds[f];
+          if (firstFold.axis === 'y') {
+            for (let y = firstFold.value; y <= yMax; y++) {
+              const dy = firstFold.value - y;
+              const yy = firstFold.value + dy;
+              for (let x = 0; x <= xMax; x++) {
+                if (dy < 0) {
+                  const p = grid[y][x];
+                  if (p > 0) {
+                    grid[yy][x] += p;
+                  }
+                }
+                grid[y][x] = 0;
+              }
+            }
+          } else if (firstFold.axis === 'x') {
+            for (let y = 0; y <= yMax; y++) {
+              for (let x = firstFold.value; x <= xMax; x++) {
+                const dx = firstFold.value - x;
+                const xx = firstFold.value + dx;
+                if (dx < 0) {
+                  const p = grid[y][x];
+                  if (p > 0) {
+                    grid[y][xx] += p;
+                  }
+                }
+                grid[y][x] = 0;
+              }
+            }
+          }
+        }
+        console.log(grid.map(r => r.map(v => v > 0 ? '#' : '.').join(' ').replace(/(\s?\.)+$/g, '')).join('\n').replace(/\n\n/g, ''));
+        return 'look in console';
+      }
     },
     day14: {
-      part1: () => {},
-      part2: () => {}
+      part1: (data) => {
+        const input = data.trim().split(/\r?\n\r?\n/);
+        let template = input[0];
+        const chars = input[1].split('\n').reduce((acc, p) => {
+          const pair = p.split(' -> ');
+          const find = pair[0];
+          const repl = pair[1];
+          acc[find] = find[0] + repl + find[1];
+          return acc;
+        }, {});
+        const passes = 10;
+        for (let p = 0; p < passes; p++) {
+          const tempLength = template.length;
+          const chunks = [];
+          for (let i = 0; i < tempLength - 1; i++) {
+            let chunk = template.substring(i, i + 2);
+            chunk = chars[chunk] || chunk;
+            chunks.push(chunk);
+          }
+          template = chunks.join(',').replace(/(\w),\1/g, '$1');
+        }
+        const counts = template.split('').reduce((acc, c) => {
+          if (!acc[c]) {
+            acc[c] = 0;
+          }
+          acc[c]++;
+          return acc;
+        }, {});
+        const result = {
+          min: Math.min(...Object.values(counts)),
+          max: Math.max(...Object.values(counts))
+        };
+        return result.max - result.min;
+      },
+      part2: (data) => {
+        const input = data.trim().split(/\r?\n\r?\n/);
+        let template = input[0];
+        const chars = input[1].split('\n').reduce((acc, p) => {
+          const pair = p.split(' -> ');
+          const find = pair[0];
+          const repl = pair[1];
+          acc[find] = find[0] + repl + find[1];
+          return acc;
+        }, {});
+        const passes = 40;
+        // this runs out of memory fast
+        for (let p = 0; p < passes; p++) {
+          const tempLength = template.length;
+          const chunks = [];
+          for (let i = 0; i < tempLength - 1; i++) {
+            let chunk = template.substring(i, i + 2);
+            chunk = chars[chunk] || chunk;
+            chunks.push(chunk);
+          }
+          template = chunks.join(',').replace(/(\w),\1/g, '$1');
+        }
+        const counts = template.split('').reduce((acc, c) => {
+          if (!acc[c]) {
+            acc[c] = 0;
+          }
+          acc[c]++;
+          return acc;
+        }, {});
+        const result = {
+          min: Math.min(...Object.values(counts)),
+          max: Math.max(...Object.values(counts))
+        };
+        return result.max - result.min;
+      }
     },
     day15: {
       part1: () => {},

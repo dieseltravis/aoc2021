@@ -6,7 +6,7 @@ my 2021 solutions on glitch: [valiant-nervous-yoke](https://valiant-nervous-yoke
 
 also on github: [dieseltravis/aoc2021](https://github.com/dieseltravis/aoc2021)
 
-[![Days completed in a row](https://img.shields.io/badge/⭐%20days%20in%20a%20row-11-blueviolet)](https://adventofcode.com/2021/) [![glitch](https://shields.io/badge/glitch-%F0%9F%91%8D%F0%9F%8E%8F-blue?logo=glitch&logoColor=violet)](https://glitch.com/)
+[![Days completed in a row](https://img.shields.io/badge/⭐%20days%20in%20a%20row-13-blueviolet)](https://adventofcode.com/2021/) [![glitch](https://shields.io/badge/glitch-%F0%9F%91%8D%F0%9F%8E%8F-blue?logo=glitch&logoColor=violet)](https://glitch.com/)
 
 [![Node.js CI](https://github.com/dieseltravis/aoc2021/actions/workflows/node.js.yml/badge.svg)](https://github.com/dieseltravis/aoc2021/actions/workflows/node.js.yml) [![Total alerts](https://img.shields.io/lgtm/alerts/g/dieseltravis/aoc2021.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/dieseltravis/aoc2021/alerts/) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/dieseltravis/aoc2021.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/dieseltravis/aoc2021/context:javascript)
 
@@ -30,10 +30,10 @@ broken:
 9. [day nine](https://valiant-nervous-yoke.glitch.me/day/09)
 10. [day ten](https://valiant-nervous-yoke.glitch.me/day/10)
 11. [day eleven](https://valiant-nervous-yoke.glitch.me/day/11)
-<!-- 
 12. [day twelve](https://valiant-nervous-yoke.glitch.me/day/12)
 13. [day thirteen](https://valiant-nervous-yoke.glitch.me/day/13)
-14. [day fourteen](https://valiant-nervous-yoke.glitch.me/day/14)
+14. [day fourteen](https://valiant-nervous-yoke.glitch.me/day/14) (part 2 broken)
+<!-- 
 15. [day fifteen](https://valiant-nervous-yoke.glitch.me/day/15)
 16. [day sixteen](https://valiant-nervous-yoke.glitch.me/day/16)
 17. [day seventeen](https://valiant-nervous-yoke.glitch.me/day/17)

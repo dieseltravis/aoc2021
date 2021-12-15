@@ -1165,33 +1165,65 @@
           const pair = p.split(' -> ');
           const find = pair[0];
           const repl = pair[1];
-          acc[find] = find[0] + repl + find[1];
+          acc[find] = repl;
           return acc;
         }, {});
-        const passes = 40;
-        // this runs out of memory fast
-        for (let p = 0; p < passes; p++) {
-          const tempLength = template.length;
-          const chunks = [];
-          for (let i = 0; i < tempLength - 1; i++) {
-            let chunk = template.substring(i, i + 2);
-            chunk = chars[chunk] || chunk;
-            chunks.push(chunk);
+        const tempLength = template.length;
+        let chunkCounts = {};
+        for (let i = 0; i < tempLength - 1; i++) {
+          let chunk = template.substring(i, i + 2);
+          if (!chunkCounts[chunk]) {
+            chunkCounts[chunk] = 0;
           }
-          template = chunks.join(',').replace(/(\w),\1/g, '$1');
+          chunkCounts[chunk]++;
         }
-        const counts = template.split('').reduce((acc, c) => {
-          if (!acc[c]) {
-            acc[c] = 0;
+        const passes = 40;
+        for (let p = 0; p < passes; p++) {
+          const chunks = Object.keys(chunkCounts);
+          const cl = chunks.length;
+          const newChunkCounts = {};
+          for (let i = 0; i < cl; i++) {
+            const chunk = chunks[i];
+            const chunkCount = chunkCounts[chunk];
+            if (chars[chunk]) {
+              const chunkA = chunk[0] + chars[chunk];
+              const chunkB = chars[chunk] + chunk[1];
+              if (!newChunkCounts[chunkA]) {
+                newChunkCounts[chunkA] = 0;
+              }
+              newChunkCounts[chunkA] += chunkCount;
+              if (!newChunkCounts[chunkB]) {
+                newChunkCounts[chunkB] = 0;
+              }
+              newChunkCounts[chunkB] += chunkCount;
+            } else {
+              if (!newChunkCounts[chunk]) {
+                newChunkCounts[chunk] = 0;
+              }
+              newChunkCounts[chunk] += chunkCount;
+            }
           }
-          acc[c]++;
+          chunkCounts = newChunkCounts;
+        }
+        const counts2 = Object.keys(chunkCounts).reduce((acc, chunk) => {
+          const a = chunk[0];
+          const b = chunk[1];
+          const c = chunkCounts[chunk];
+          if (!acc[a]) {
+            acc[a] = 0;
+          }
+          acc[a] += c;
+          if (!acc[b]) {
+            acc[b] = 0;
+          }
+          acc[b] += c;
           return acc;
         }, {});
         const result = {
-          min: Math.min(...Object.values(counts)),
-          max: Math.max(...Object.values(counts))
+          min: Math.min(...Object.values(counts2)),
+          max: Math.max(...Object.values(counts2))
         };
-        return result.max - result.min;
+        return Math.ceil((result.max - result.min) / 2);
       }
     },
     day15: {

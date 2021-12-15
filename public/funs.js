@@ -1161,7 +1161,6 @@
           }
           template = chunks.join(',').replace(/(\w),\1/g, '$1');
         }
-        //console.log(template);
         const counts = template.split('').reduce((acc, c) => {
           if (!acc[c]) {
             acc[c] = 0;
@@ -1169,15 +1168,46 @@
           acc[c]++;
           return acc;
         }, {});
-        //console.log(counts);
         const result = {
           min: Math.min(...Object.values(counts)),
           max: Math.max(...Object.values(counts))
         };
-        console.log(result);
         return result.max - result.min;
       },
-      part2: () => {}
+      part2: (data) => {
+        const input = data.trim().split('\n\n');
+        let template = input[0];
+        const chars = input[1].split('\n').reduce((acc, p) => {
+          const pair = p.split(' -> ');
+          const find = pair[0];
+          const repl = pair[1];
+          acc[find] = find[0] + repl + find[1];
+          return acc;
+        }, {});
+        const passes = 40;
+        for (let p = 0; p < passes; p++) {
+          const tempLength = template.length;
+          const chunks = [];
+          for (let i = 0; i < tempLength - 1; i++) {
+            let chunk = template.substring(i, i + 2);
+            chunk = chars[chunk] || chunk;
+            chunks.push(chunk);
+          }
+          template = chunks.join(',').replace(/(\w),\1/g, '$1');
+        }
+        const counts = template.split('').reduce((acc, c) => {
+          if (!acc[c]) {
+            acc[c] = 0;
+          }
+          acc[c]++;
+          return acc;
+        }, {});
+        const result = {
+          min: Math.min(...Object.values(counts)),
+          max: Math.max(...Object.values(counts))
+        };
+        return result.max - result.min;
+      }
     },
     day15: {
       part1: () => {},

@@ -1083,7 +1083,7 @@
         }
         console.log(grid.map(r => r.map(v => v > 0 ? '#' : '.').join(' ')).join('\n'));
         const result = grid.map(r => r.map(v => v > 0 ? '1' : '').join('')).join('').length;
-        return result
+        return result;
       },
       part2: (data) => {
         const input = data.trim().split('\n\n');
@@ -1093,7 +1093,6 @@
         const folds = input[1].split('\n').map(r => r.split(' ')[2].split('=')).map(r => {
           return { axis: r[0], value: parseInt(r[1], 10) };
         });
-        //console.log(coords, folds);
         const coordsLength = coords.length;
         const xMax = Math.max(...coords.map(p => p.x));
         const yMax = Math.max(...coords.map(p => p.y));
@@ -1175,7 +1174,7 @@
         return result.max - result.min;
       },
       part2: (data) => {
-        const input = data.trim().split('\n\n');
+        const input = data.trim().split('\r?\n\r?\n');
         let template = input[0];
         const chars = input[1].split('\n').reduce((acc, p) => {
           const pair = p.split(' -> ');

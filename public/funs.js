@@ -1160,7 +1160,7 @@
       },
       part2: (data) => {
         const input = data.trim().split(/\r?\n\r?\n/);
-        let template = input[0];
+        const template = input[0];
         const chars = input[1].split('\n').reduce((acc, p) => {
           const pair = p.split(' -> ');
           const find = pair[0];
@@ -1171,7 +1171,7 @@
         const tempLength = template.length;
         let chunkCounts = {};
         for (let i = 0; i < tempLength - 1; i++) {
-          let chunk = template.substring(i, i + 2);
+          const chunk = template.substring(i, i + 2);
           if (!chunkCounts[chunk]) {
             chunkCounts[chunk] = 0;
           }

@@ -956,12 +956,68 @@
           return [];
         };
         const routes = getPaths(caves.start, []);
-        console.log(routes);
-        console.log(safety);
-
         return routes.length;
       },
-      part2: () => {
+      part2: (data) => {
+        const list = data.trim().split('\n').map(r => r.split('-'));
+        let id = 0;
+        const addCave = (arr, a, b) => {
+          if (typeof arr[a] === 'undefined') {
+            arr[a] = {
+              id: id++,
+              cave: a,
+              isBig: a === a.toUpperCase(),
+              doors: [b]
+            };
+          } else {
+            arr[a].doors.push(b);
+          }
+        };
+        const caves = list.reduce((acc, pair) => {
+          const a = pair[0];
+          const b = pair[1];
+          addCave(acc, a, b);
+          addCave(acc, b, a);
+          return acc;
+        }, {});
+        const allCaves = Object.values(caves);
+        console.log(allCaves.map(c => {
+          let output = c.cave + '(' + c.id + ')';
+          if (c.doors.length) {
+            output += ' => ' + c.doors.join(',');
+          }
+          return output;
+        }).join('\n'));
+        let safety = 1000;
+        const getPaths = (cave, path) => {
+          if (cave.cave === 'end') {
+            path.path.push('end');
+            return [path];
+          } else if (cave.isBig || !path.path.includes(cave.cave)) {
+            const dl = cave.doors.length;
+            let newpaths = [];
+            path.path.push(cave.cave);
+            for (let i = 0; i < dl; i++) {
+              const child = caves[cave.doors[i]];
+              newpaths = newpaths.concat(getPaths(child, { treat: path.treat, path: path.path.slice() }));
+            }
+            return newpaths;
+          } else if (cave.cave !== 'start' && path.treat === 0) {
+            // let a little cave have a treat
+            path.treat = 1;
+            const dl = cave.doors.length;
+            let newpaths = [];
+            path.path.push(cave.cave);
+            for (let i = 0; i < dl; i++) {
+              const child = caves[cave.doors[i]];
+              newpaths = newpaths.concat(getPaths(child, { treat: path.treat, path: path.path.slice() }));
+            }
+            return newpaths;
+          }
+          return [];
+        };
+        const routes = getPaths(caves.start, { treat: 0, path: [] });
+        return routes.length;
       }
     },
     day13: {

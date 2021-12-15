@@ -916,12 +916,10 @@
               id: id++,
               cave: a,
               isBig: a === a.toUpperCase(),
-              doors: [b],
-              paths: [a + b]
+              doors: [b]
             };
           } else {
             arr[a].doors.push(b);
-            arr[a].paths.push(a + b);
           }
         };
         const caves = list.reduce((acc, pair) => {
@@ -937,95 +935,29 @@
           if (c.doors.length) {
             output += ' => ' + c.doors.join(',');
           }
-          if (c.paths.length) {
-            //output += ' => ' + c.paths.join(',');
-          }
           return output;
         }).join('\n'));
-        const routes = [['start']];
-        const paths = ['start'];
         let safety = 1000;
-        const process = (doors) => {
-          const rl = routes.length;
-          for (let i = 0; i < rl && safety-- > 0; i++) {
-            const route = routes[i].slice();
-            console.log(route);
-            const remainDoors = doors.filter(d => (caves[d].isBig || !route.includes(d)));
-            console.log(remainDoors);
-            const dl = remainDoors.length;
-            for (let j = 0; j < dl && safety-- > 0; j++) {
-              const cave = caves[remainDoors[j]];
-              let path = paths[i];
-              route.push(cave.cave);
-              path += cave.cave;
-              if (!paths.includes(path)) {
-                paths.push(path);
-                // add new route to end
-                routes.push(route);
-              }
-              console.log(paths);
-              if (cave.cave !== 'end') {
-                process(cave.doors);
-              }
-            }
-          }  
-        };
-        //process(caves.start.doors);
         const getPaths = (cave, path) => {
           if (cave.cave === 'end') {
-            return path;
+            path.push('end');
+            return [path];
           }
-          const dl = cave.doors.length;
-          let newpaths = [];
           if (cave.isBig || !path.includes(cave.cave)) {
+            const dl = cave.doors.length;
+            let newpaths = [];
             path.push(cave.cave);
-          }
-          console.log(path);
-          for (let d = 0; d < dl; d++) {
-            const child = caves[cave.doors[d]];
-            // todo: fix recursion
-            //newpaths = newpaths.concat(getPaths(child, path.slice()));
-            if (child.isBig || !path.includes(child.cave)) {
+            for (let i = 0; i < dl; i++) {
+              const child = caves[cave.doors[i]];
               newpaths = newpaths.concat(getPaths(child, path.slice()));
             }
+            return newpaths;
           }
-          return newpaths;
+          return [];
         };
-        //console.log(getPaths(caves.start, []));
-        
-        
-        const q = ['start'];
-        const r = [];
-        const v = {start:1};
-        while (q.length && safety-- > 0) {
-          const c = q.shift();
-          r.push(c);
-          const cc = caves[c];
-          for (let d = cc.doors.length; d--;) {
-            const dd = cc.doors[d];
-            if (!v[dd]) {
-              v[dd] = 1;
-              q.push(dd);
-            }
-          }
-        }
-        console.log(q, r, v);
-        
-        
-        /*while (node.cave !== 'end' && safety--) {
-          path.push(node.cave);
-          for (let i = 0; i < node.doors.length; i++) {
-            const next = caves[node.doors[i]];
-            if (next.isBig || !path.some(n => n === next.cave)) {
-              node = next;
-              break;
-            }
-          }
-        }*/
-        //path.push('end');
+        const routes = getPaths(caves.start, []);
         console.log(routes);
         console.log(safety);
-        //routes.push(path.join(''));
 
         return routes.length;
       },
@@ -1041,7 +973,6 @@
         const folds = input[1].split('\n').map(r => r.split(' ')[2].split('=')).map(r => {
           return { axis: r[0], value: parseInt(r[1], 10) };
         });
-        //console.log(coords, folds);
         const coordsLength = coords.length;
         const xMax = Math.max(...coords.map(p => p.x));
         const yMax = Math.max(...coords.map(p => p.y));
@@ -1184,6 +1115,7 @@
           return acc;
         }, {});
         const passes = 40;
+        // this runs out of memory fast
         for (let p = 0; p < passes; p++) {
           const tempLength = template.length;
           const chunks = [];

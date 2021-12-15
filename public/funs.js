@@ -937,7 +937,6 @@
           }
           return output;
         }).join('\n'));
-        let safety = 1000;
         const getPaths = (cave, path) => {
           if (cave.cave === 'end') {
             path.push('end');
@@ -988,7 +987,6 @@
           }
           return output;
         }).join('\n'));
-        let safety = 1000;
         const getPaths = (cave, path) => {
           if (cave.cave === 'end') {
             path.path.push('end');

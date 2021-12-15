@@ -1174,7 +1174,7 @@
         return result.max - result.min;
       },
       part2: (data) => {
-        const input = data.trim().split('\r?\n\r?\n');
+        const input = data.trim().split(/\r?\n\r?\n/);
         let template = input[0];
         const chars = input[1].split('\n').reduce((acc, p) => {
           const pair = p.split(' -> ');

@@ -1232,7 +1232,6 @@
         const ymax = grid.length;
         const xmax = grid[0].length;
         console.log(ymax, xmax);
-        //let id = 0;
         const points = grid.reduce((acc, r, y) => acc.concat(r.reduce((acc2, v, x) => {
           const p = {
             // this should be the same as the index
@@ -1244,19 +1243,15 @@
           };
           // no diagonals
           if (y > 0) {
-            //p.n.push({ id: ((y - 1) * ymax) + x, y: y - 1, x: x });
             p.n.push(((y - 1) * ymax) + x);
           }
           if (y < ymax - 1) {
-            //p.n.push({ id: ((y + 1) * ymax) + x, y: y + 1, x: x });
             p.n.push(((y + 1) * ymax) + x);
           }
           if (x > 0) {
-            //p.n.push({ id: (y * ymax) + x - 1, y: y, x: x - 1 });
             p.n.push((y * ymax) + x - 1);
           }
           if (x < xmax - 1) {
-            //p.n.push({ id: (y * ymax) + x + 1, y: y, x: x + 1 });
             p.n.push((y * ymax) + x + 1);
           }
           acc2.push(p);
@@ -1267,7 +1262,7 @@
         const pointsLength = points.length;
         const start = points[0];
         const end = points[pointsLength - 1];
-        let min = 999999;
+        let min = 999999999;
         const getPaths = (point, path) => {
           if (point.id >= end.id) {
             const sum = path.reduce((acc, p) => acc + points[p].v, 0) + end.v;
@@ -1293,14 +1288,6 @@
           // stop at dead end
           return false;
         };
-        //const routes = getPaths(start, []);
-        //const sums = routes.reduce((acc, path) => {
-        //  const sum = path.reduce((acc2, point) => acc2 + points[point].v, 0);
-        //  acc.push(sum);
-        //  return acc;
-        //}, []);
-        //console.log(sums);
-        //return Math.min(...sums);
         getPaths(start, []);
         return min;
       },

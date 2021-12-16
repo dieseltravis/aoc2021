@@ -1288,14 +1288,22 @@
           // stop at dead end
           return false;
         };
-        getPaths(start, []);
+        // getPaths(start, []);
         return min;
       },
-      part2: () => {}
+      part2: () => {
+      }
     },
     day16: {
-      part1: () => {},
-      part2: () => {}
+      part1: (data) => {
+        const list = data.trim().split('').map(c => (parseInt(c, 16).toString(2)).padStart(4, '0'));
+        const literal = /^(\d{3})(100)(1\d{4})+(0\d{4})0+/;
+        //                1 VVV  2TTT  3 A.B... 4 CCCC
+        const operator = /^(\d{3})(\d{3})(?:(?:0(\d{15}))|(?:1(\d{11})))/;
+        //                 1 VVV  2 TTT         3 length      4 number  ???
+      },
+      part2: () => {
+      }
     },
     day17: {
       part1: () => {},

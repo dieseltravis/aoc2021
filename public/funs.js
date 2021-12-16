@@ -1228,56 +1228,81 @@
     },
     day15: {
       part1: (data) => {
-        const grid = data.split('\n').map(r => r.split('').map(Number));
-        //console.log(grid);
+        const grid = data.trim().split(/\r?\n/).map(r => r.split('').map(Number));
         const ymax = grid.length;
         const xmax = grid[0].length;
-        // find min value going from 0,0 to ymax, xmax
-        const start = { y: 0, x: 0, v: grid[0][0] };
-        const end = { y: ymax - 1, x: xmax - 1, v: grid[ymax - 1][xmax - 1] };
-        const getPaths = (point, path) => {
-          if (point.y === end.y && point.x === end.x) {
-            path.push(end);
-            return [path];
+        console.log(ymax, xmax);
+        //let id = 0;
+        const points = grid.reduce((acc, r, y) => acc.concat(r.reduce((acc2, v, x) => {
+          const p = {
+            // this should be the same as the index
+            id: (y * ymax) + x,
+            y: y,
+            x: x,
+            v: v,
+            n: []
+          };
+          // no diagonals
+          if (y > 0) {
+            //p.n.push({ id: ((y - 1) * ymax) + x, y: y - 1, x: x });
+            p.n.push(((y - 1) * ymax) + x);
           }
-          if (!path.some(p => p.y === point.y && p.x === point.x)) {
-            const steps = [];
-            // no diagonals!
-            if (point.y > 0) {
-              steps.push({ y: point.y - 1, x: point.x });
-            }
-            if (point.y < ymax - 1) {
-              steps.push({ y: point.y + 1, x: point.x });
-            }
-            if (point.x > 0) {
-              steps.push({ y: point.y, x: point.x - 1 });
-            }
-            if (point.x < xmax - 1) {
-              steps.push({ y: point.y, x: point.x + 1 });
-            }
-            const stepLength = steps.length;
+          if (y < ymax - 1) {
+            //p.n.push({ id: ((y + 1) * ymax) + x, y: y + 1, x: x });
+            p.n.push(((y + 1) * ymax) + x);
+          }
+          if (x > 0) {
+            //p.n.push({ id: (y * ymax) + x - 1, y: y, x: x - 1 });
+            p.n.push((y * ymax) + x - 1);
+          }
+          if (x < xmax - 1) {
+            //p.n.push({ id: (y * ymax) + x + 1, y: y, x: x + 1 });
+            p.n.push((y * ymax) + x + 1);
+          }
+          acc2.push(p);
+          return acc2;
+        }, [])), []);
+        console.log(points);
+        // find min value going from 0,0 to ymax, xmax
+        const pointsLength = points.length;
+        const start = points[0];
+        const end = points[pointsLength - 1];
+        let min = 999999;
+        const getPaths = (point, path) => {
+          if (point.id >= end.id) {
+            const sum = path.reduce((acc, p) => acc + points[p].v, 0) + end.v;
+            min = Math.min(min, sum);
+            // stop at end
+            return false;
+          }
+          if (!path.includes(point.id)) {
+            const stepLength = point.n.length;
             let newpaths = [];
-            path.push(point);
+            path.push(point.id);
             for (let i = 0; i < stepLength; i++) {
-              const step = steps[i];
-              if (!(step.y === point.y && step.x === point.x) && !path.some(p => p.y === step.y && p.x === step.x)) {
-                step.v = grid[step.y][step.x];
-                newpaths = newpaths.concat(getPaths(step, path.slice()));
+              const step = points[point.n[i]];
+              if (!path.includes(step.id)) {
+                const newerpaths = getPaths(step, path.slice());
+                if (newerpaths !== false) {
+                  newpaths = newpaths.concat(newerpaths);
+                }
               }
             }
             return newpaths;
           }
-          return [];
+          // stop at dead end
+          return false;
         };
-        const routes = getPaths(start, []);
-        //console.log(routes);
-        const sums = routes.reduce((acc, path) => {
-          const sum = path.reduce((acc2, point) => acc2 + point.v, 0);
-          acc.push(sum);
-          return acc;
-        }, []);
-        console.log(sums);
-        return Math.min(...sums);
+        //const routes = getPaths(start, []);
+        //const sums = routes.reduce((acc, path) => {
+        //  const sum = path.reduce((acc2, point) => acc2 + points[point].v, 0);
+        //  acc.push(sum);
+        //  return acc;
+        //}, []);
+        //console.log(sums);
+        //return Math.min(...sums);
+        getPaths(start, []);
+        return min;
       },
       part2: () => {}
     },

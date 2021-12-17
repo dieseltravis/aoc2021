@@ -1296,11 +1296,89 @@
     },
     day16: {
       part1: (data) => {
-        const list = data.trim().split('').map(c => (parseInt(c, 16).toString(2)).padStart(4, '0'));
-        const literal = /^(\d{3})(100)(1\d{4})+(0\d{4})0+/;
-        //                1 VVV  2TTT  3 A.B... 4 CCCC
+        let bits = data.trim().split('').map(c => (parseInt(c, 16).toString(2)).padStart(4, '0')).join('');
+        console.log(bits);
+        const matchType = /^\d{3}(\d{3})/;
+        const literal = /^(\d{3})(100)((?:1\d{4})+)(0\d{4})0+/;
+        //                1 VVV  2TTT 3 A.B...     4 CCCC
         const operator = /^(\d{3})(\d{3})(?:(?:0(\d{15}))|(?:1(\d{11})))/;
         //                 1 VVV  2 TTT         3 length      4 number  ???
+        const getType = (str) => {
+          return parseInt(str.match(matchType)[1], 2);
+        };
+        const getLiteral = (match) => {
+          const version = parseInt(match[1], 2);
+          const type = 4;
+          let bin = '';
+          const notLast = match[3];
+          const notLastLength = notLast.length;
+          for (let i = 0; i < notLastLength; i += 5) {
+            // skip 1, keep next 4
+            bin += notLast.substring(i + 1, i + 5);
+          }
+          const last = match[4];
+          // skip leading 0
+          bin += last.substring(1);
+          const value = parseInt(bin, 2);
+          return {
+            pt: 'literal',
+            pl: match.length,
+            v: version,
+            t: type,
+            val: value
+          };
+        };
+        const getOperator = (match) => {
+          const version = parseInt(match[1], 2);
+          const type = parseInt(match[2], 2);
+          const length = parseInt(match[3], 2);
+          const number = parseInt(match[4], 2);
+          const op = {
+            pt: 'operator',
+            pl: match.length,
+            v: version,
+            t: type,
+            len: length,
+            num: number,
+            packets: []
+          };
+          if (!isNaN(op.len)) {
+            // next len chars are packets for op
+            const sub = bits.substring(0, op.len);
+            op.pl += op.len;
+            // TODO: get packets in sub
+          }
+          if (!isNaN(op.num)) {
+            // next num packets are for op
+            for (let i = 0; i < op.num; i++) {
+              // TODO: set pl to sum of lens
+            }
+            op.pl += op.packets.reduce((sum, p) => sum + p.pl, 0);
+          }
+          return op;
+        };
+        const versions = [];
+        const packets = [];
+        const getNextPacket = (bitstr) => {
+          let packet = {};
+          if (getType(bits) === 4) {
+            const matched = bits.match(literal);
+            const lit = getLiteral(matched);
+            versions.push(lit.v);
+            packets.push(lit);
+            console.log('literal:', lit);
+            packet = lit;
+          } else {
+            const matched = bits.match(operator);
+            const op = getOperator(matched);
+            versions.push(op.v);
+            console.log('operator:', op);
+            packet = op;
+          }
+          packets.push(packet);
+          return bitstr;
+        };
+        return versions.reduce((result, v) => result + v, 0);
       },
       part2: () => {
       }

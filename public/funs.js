@@ -1288,14 +1288,14 @@
           // stop at dead end
           return false;
         };
-        // getPaths(start, []);
+        getPaths(start, []);
         return min;
       },
       part2: () => {}
     },
     day16: {
       part1: (data) => {
-        let bits = data.trim().split('').map(c => (parseInt(c, 16).toString(2)).padStart(4, '0')).join('');
+        const bits = data.trim().split('').map(c => (parseInt(c, 16).toString(2)).padStart(4, '0')).join('');
         console.log(bits);
         const matchType = /^\d{3}(\d{3})/;
         const literal = /^(\d{3})(100)((?:1\d{4})+)(0\d{4})0+/;
@@ -1345,11 +1345,11 @@
           bitstr = bitstr.substring(op.pl);
           if (!isNaN(op.len)) {
             // next len chars are packets for op
-            const sub = bitstr.substring(0, op.len);
+            let sub = bitstr.substring(0, op.len);
             op.pl += op.len;
             let safety = 1000;
             while (sub.length > 0 && !sub.split('').every(c => c === '0') && safety-- > 0) {
-              let result = getNextPacket(sub);
+              const result = getNextPacket(sub);
               op.packets.push(result.packet);
               sub = result.bitstr;
             }
@@ -1357,7 +1357,7 @@
             // next num packets are for op
             for (let i = 0; i < op.num; i++) {
               // set pl to sum of lens
-              let result = getNextPacket(bitstr);
+              const result = getNextPacket(bitstr);
               op.packets.push(result.packet);
               bitstr = result.bitstr;
             }
@@ -1388,7 +1388,7 @@
               }
               packets.push(packet);
             } else {
-              bitstr = bistr.substring(1);
+              bitstr = bitstr.substring(1);
             }
           }
           return {

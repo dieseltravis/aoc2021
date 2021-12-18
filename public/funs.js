@@ -1515,7 +1515,82 @@
       }
     },
     day18: {
-      part1: () => {},
+      part1: (data) => {
+        // never use eval
+        const list = data.trim().split(/\r?\n/).map(r => JSON.parse(r));
+        const add = (a, b) => [a, b];
+        console.log(JSON.stringify(list));
+        const reducer = (arr) => {
+          const result = [];
+          const al = arr.length;
+          for (let a = 0; a < al; a++) {
+            const lastA = a === (al - 1);
+            const av = arr[a];
+            if (typeof av === 'number') {
+              // num
+            } else {
+              const bl = av.length;
+              for (let b = 0; b < bl; b++) {
+                const lastB = b === (bl - 1);
+                const bv = av[b];
+                if (typeof bv === 'number') {
+                  // num
+                } else {
+                  const cl = bv.length;
+                  for (let c = 0; c < cl; c++) {
+                    const lastC = c === (cl - 1);
+                    const cv = bv[c];
+                    if (typeof cv === 'number') {
+                      // num
+                    } else {
+                      const dl = cv.length;
+                      for (let d = 0; d < dl; d++) {
+                        const lastD = d === (dl - 1);
+                        const dv = cv[d];
+                        if (typeof dv === 'number') {
+                          // num
+                        } else {
+                          // beyond level 4, explode
+                          if(!(a && b && c && d)) {
+                            // first, none to the left
+                            // add to the right
+                            cv[0] = 0;
+                            cv[1] = dv[1] + cv[1];
+                            console.log(arr);
+                            return;
+                          } else if (lastA && lastB && lastC && lastD) {
+                            // last, none to the right
+                            cv[d - 1] = dv[0] + cv[d - 1];
+                            cv[d] = 0;
+                            console.log(arr);
+                            return;
+                          } else {
+                            // not first or last, add both ways
+                            // this is broken
+                            if (d > 0) {
+                              cv[d - 1] = dv[0] + cv[d - 1];
+                            } else {
+                              cv[0] = 0;
+                            }
+                            if (lastD) {
+                              cv[d] = 0;
+                            } else {
+                              cv[d - 1] = dv[0] + cv[d - 1];
+                            }
+                            return;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        };
+        reducer(list[0]);
+        return null;
+      },
       part2: () => {}
     },
     day19: {

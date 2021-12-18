@@ -1409,12 +1409,12 @@
         // target area: x=211..232, y=-124..-69
         const input = data.trim().split(', ').map(p => p.split('=')[1].split('..').map(Number));
         const target = {
-          x: [ input[0][0], input[0][1] ],
-          y: [ input[1][0], input[1][1] ]
+          x: [input[0][0], input[0][1]],
+          y: [input[1][0], input[1][1]]
         };
         let ymax = 10;
-        let xmax = Math.max(...target.x);
-        let offsetY = -Math.min(...target.y) + 10;
+        const xmax = Math.max(...target.x);
+        const offsetY = -Math.min(...target.y) + 10;
         const grid = Array.from({ length: offsetY + 10 }, () => Array.from({ length: xmax + 10 }, () => '.'));
         grid[offsetY][0] = 'S';
         for (let y = target.y[0]; y <= target.y[1]; y++) {
@@ -1422,10 +1422,8 @@
             grid[y + offsetY][x] = 'T';
           }
         }
-        let v = { dx: 0, dy: 0 };
-        let hit = 0;
-        let time = 0;
-        let maxmaxy = 0
+        const v = { dx: 0, dy: 0 };
+        let maxmaxy = 0;
         let xstart = 0;
         for (let x = 1; x < xmax; x++) {
           let dx = x;
@@ -1451,7 +1449,6 @@
             let safety = 1000;
             const newGrid = grid.map(r => r.slice()).slice();
             while (last.y >= target.y[1] && last.x <= target.x[1] && safety-- > 0) {
-              time++;
               last.y += v.dy--;
               last.x += Math.max(v.dx--, 0);
               ymax = Math.max(ymax, last.y + offsetY + 1);
@@ -1464,9 +1461,7 @@
               }
               if (newGrid[last.y + offsetY]) {
                 if (newGrid[last.y + offsetY][last.x] === 'T') {
-                  hit++;
                   maxmaxy = Math.max(maxy, maxmaxy);
-                  //console.log('hit ' + hit + ' at x:' + last.x + ', y:' + last.y + ' on step #' + time + ' for ' + maxy);
                 }
                 maxy = Math.max(maxy, last.y);
                 newGrid[last.y + offsetY][last.x] = '#';
@@ -1478,7 +1473,7 @@
           }
           console.log('dy:' + dy + ' ' + maxmaxy);
         }
-        //console.log(grid.reduce((str, r) => r.join('') + '\n' + str, ''));
+        // console.log(grid.reduce((str, r) => r.join('') + '\n' + str, ''));
         // 1830 is too low
         return maxmaxy;
       },
@@ -1487,16 +1482,10 @@
         // result: 112
         // target area: x=211..232, y=-124..-69
         const input = data.trim().split(', ').map(p => p.split('=')[1].split('..').map(Number));
-        const target = {
-          x: [ input[0][0], input[0][1] ],
-          y: [ input[1][0], input[1][1] ]
-        };
-        const xl = target.x[0];
-        const xh = target.x[1];
-        const yl = target.y[0];
-        const yh = target.y[1];
-        let ymax = 10;
-        let xmax = Math.max(...target.x);
+        const xl = input[0][0];
+        const xh = input[0][1];
+        const yl = input[1][0];
+        const yh = input[1][1];
         const inTarget = (x, y) => {
           return x >= xl && x <= xh && y >= yl && y <= yh;
         };

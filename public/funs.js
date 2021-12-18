@@ -1482,7 +1482,48 @@
         // 1830 is too low
         return maxmaxy;
       },
-      part2: () => {}
+      part2: (data) => {
+        // target area: x=20..30, y=-10..-5
+        // result: 112
+        // target area: x=211..232, y=-124..-69
+        const input = data.trim().split(', ').map(p => p.split('=')[1].split('..').map(Number));
+        const target = {
+          x: [ input[0][0], input[0][1] ],
+          y: [ input[1][0], input[1][1] ]
+        };
+        const xl = target.x[0];
+        const xh = target.x[1];
+        const yl = target.y[0];
+        const yh = target.y[1];
+        let ymax = 10;
+        let xmax = Math.max(...target.x);
+        const inTarget = (x, y) => {
+          return x >= xl && x <= xh && y >= yl && y <= yh;
+        };
+        let hits = 0;
+        for (let sy = yl; sy < 200; sy++) {
+          for (let sx = 1; sx < 400; sx++) {
+            let safety = 1000;
+            let vx = sx;
+            let vy = sy;
+            let lx = 0;
+            let ly = 0;
+            let isHit = 0;
+            while (!isHit && ly >= yl && lx <= xh && safety-- > 0) {
+              ly += vy--;
+              lx += Math.max(vx--, 0);
+              if (inTarget(lx, ly)) {
+                hits++;
+                isHit = 1;
+              }
+            }
+            if (safety <= 0) {
+              console.warn('safety hit');
+            }
+          }
+        }
+        return hits;
+      }
     },
     day18: {
       part1: () => {},

@@ -1227,16 +1227,292 @@
       }
     },
     day15: {
-      part1: () => {},
+      part1: (data) => {
+        const grid = data.trim().split(/\r?\n/).map(r => r.split('').map(Number));
+        const ymax = grid.length;
+        const xmax = grid[0].length;
+        console.log(ymax, xmax);
+        const points = grid.reduce((acc, r, y) => acc.concat(r.reduce((acc2, v, x) => {
+          const p = {
+            // this should be the same as the index
+            id: (y * ymax) + x,
+            y: y,
+            x: x,
+            v: v,
+            n: []
+          };
+          // no diagonals
+          if (y > 0) {
+            p.n.push(((y - 1) * ymax) + x);
+          }
+          if (y < ymax - 1) {
+            p.n.push(((y + 1) * ymax) + x);
+          }
+          if (x > 0) {
+            p.n.push((y * ymax) + x - 1);
+          }
+          if (x < xmax - 1) {
+            p.n.push((y * ymax) + x + 1);
+          }
+          acc2.push(p);
+          return acc2;
+        }, [])), []);
+        console.log(points);
+        // find min value going from 0,0 to ymax, xmax
+        const pointsLength = points.length;
+        const start = points[0];
+        const end = points[pointsLength - 1];
+        let min = 999999999;
+        const getPaths = (point, path) => {
+          if (point.id >= end.id) {
+            const sum = path.reduce((acc, p) => acc + points[p].v, 0) + end.v;
+            min = Math.min(min, sum);
+            // stop at end
+            return false;
+          }
+          if (!path.includes(point.id)) {
+            const stepLength = point.n.length;
+            let newpaths = [];
+            path.push(point.id);
+            for (let i = 0; i < stepLength; i++) {
+              const step = points[point.n[i]];
+              if (!path.includes(step.id)) {
+                const newerpaths = getPaths(step, path.slice());
+                if (newerpaths !== false) {
+                  newpaths = newpaths.concat(newerpaths);
+                }
+              }
+            }
+            return newpaths;
+          }
+          // stop at dead end
+          return false;
+        };
+        getPaths(start, []);
+        return min;
+      },
       part2: () => {}
     },
     day16: {
-      part1: () => {},
+      part1: (data) => {
+        const bits = data.trim().split('').map(c => (parseInt(c, 16).toString(2)).padStart(4, '0')).join('');
+        console.log(bits);
+        const matchType = /^\d{3}(\d{3})/;
+        const literal = /^(\d{3})(100)((?:1\d{4})+)(0\d{4})0+/;
+        //                1 VVV  2TTT 3 A.B...     4 CCCC
+        const operator = /^(\d{3})(\d{3})(?:(?:0(\d{15}))|(?:1(\d{11})))/;
+        //                 1 VVV  2 TTT         3 length      4 number  ???
+        const getType = (str) => {
+          return parseInt(str.match(matchType)[1], 2);
+        };
+        const getLiteral = (match) => {
+          const version = parseInt(match[1], 2);
+          const type = 4;
+          let bin = '';
+          const notLast = match[3];
+          const notLastLength = notLast.length;
+          for (let i = 0; i < notLastLength; i += 5) {
+            // skip 1, keep next 4
+            bin += notLast.substring(i + 1, i + 5);
+          }
+          const last = match[4];
+          // skip leading 0
+          bin += last.substring(1);
+          const value = parseInt(bin, 2);
+          return {
+            pt: 'literal',
+            pl: match[0].length,
+            v: version,
+            t: type,
+            val: value
+          };
+        };
+        const getOperator = (match, bitstr) => {
+          const version = parseInt(match[1], 2);
+          const type = parseInt(match[2], 2);
+          const length = parseInt(match[3], 2);
+          const number = parseInt(match[4], 2);
+          const op = {
+            pt: 'operator',
+            pl: match[0].length,
+            v: version,
+            t: type,
+            len: length,
+            num: number,
+            packets: []
+          };
+          // remove matched chars
+          bitstr = bitstr.substring(op.pl);
+          if (!isNaN(op.len)) {
+            // next len chars are packets for op
+            let sub = bitstr.substring(0, op.len);
+            op.pl += op.len;
+            let safety = 1000;
+            while (sub.length > 0 && !sub.split('').every(c => c === '0') && safety-- > 0) {
+              const result = getNextPacket(sub);
+              op.packets.push(result.packet);
+              sub = result.bitstr;
+            }
+          } else if (!isNaN(op.num)) {
+            // next num packets are for op
+            for (let i = 0; i < op.num; i++) {
+              // set pl to sum of lens
+              const result = getNextPacket(bitstr);
+              op.packets.push(result.packet);
+              bitstr = result.bitstr;
+            }
+            op.pl += op.packets.reduce((sum, p) => sum + p.pl, 0);
+          }
+          return op;
+        };
+        const versions = [];
+        const packets = [];
+        const getNextPacket = (bitstr) => {
+          let packet = null;
+          let safety = 1000;
+          while (packet === null && bitstr.length > 0 && !bitstr.split('').every(c => c === '0') && safety-- > 0) {
+            const pt = getType(bitstr);
+            if (!isNaN(pt) && pt !== 0) {
+              if (pt === 4) {
+                const matched = bitstr.match(literal);
+                const lit = getLiteral(matched);
+                versions.push(lit.v);
+                console.log('literal:', lit);
+                packet = lit;
+              } else {
+                const matched = bitstr.match(operator);
+                const op = getOperator(matched, bitstr);
+                versions.push(op.v);
+                console.log('operator:', op);
+                packet = op;
+              }
+              packets.push(packet);
+            } else {
+              bitstr = bitstr.substring(1);
+            }
+          }
+          return {
+            packet: packet,
+            bitstr: bitstr
+          };
+        };
+        getNextPacket(bits);
+        console.log(packets);
+        return versions.reduce((result, v) => result + v, 0);
+      },
       part2: () => {}
     },
     day17: {
-      part1: () => {},
-      part2: () => {}
+      part1: (data) => {
+        // target area: x=20..30, y=-10..-5
+        // result: 6,9 = 45
+        // target area: x=211..232, y=-124..-69
+        const input = data.trim().split(', ').map(p => p.split('=')[1].split('..').map(Number));
+        const target = {
+          x: [input[0][0], input[0][1]],
+          y: [input[1][0], input[1][1]]
+        };
+        let ymax = 10;
+        const xmax = Math.max(...target.x);
+        const offsetY = -Math.min(...target.y) + 10;
+        const grid = Array.from({ length: offsetY + 10 }, () => Array.from({ length: xmax + 10 }, () => '.'));
+        grid[offsetY][0] = 'S';
+        for (let y = target.y[0]; y <= target.y[1]; y++) {
+          for (let x = target.x[0]; x <= target.x[1]; x++) {
+            grid[y + offsetY][x] = 'T';
+          }
+        }
+        const v = { dx: 0, dy: 0 };
+        let maxmaxy = 0;
+        let xstart = 0;
+        for (let x = 1; x < xmax; x++) {
+          let dx = x;
+          let sum = 0;
+          while (dx > 0) {
+            sum += dx;
+            dx--;
+            if (sum >= xmax) {
+              xstart = x;
+              dx = -1;
+              x = 999;
+            }
+          }
+        }
+        console.log('xstart:' + xstart);
+        // try different velocities
+        for (let dy = 100; dy < 200; dy++) {
+          for (let dx = 5; dx < 100; dx++) {
+            v.dy = dy;
+            v.dx = dx;
+            const last = { x: 0, y: 0 };
+            let maxy = 0;
+            let safety = 1000;
+            const newGrid = grid.map(r => r.slice()).slice();
+            while (last.y >= target.y[1] && last.x <= target.x[1] && safety-- > 0) {
+              last.y += v.dy--;
+              last.x += Math.max(v.dx--, 0);
+              ymax = Math.max(ymax, last.y + offsetY + 1);
+              const gridmax = newGrid.length - 1;
+              if (ymax >= gridmax) {
+                // expand grid
+                for (let ll = 10 + ymax - gridmax; ll--;) {
+                  newGrid.push(Array.from({ length: xmax + 10 }, () => '.'));
+                }
+              }
+              if (newGrid[last.y + offsetY]) {
+                if (newGrid[last.y + offsetY][last.x] === 'T') {
+                  maxmaxy = Math.max(maxy, maxmaxy);
+                }
+                maxy = Math.max(maxy, last.y);
+                newGrid[last.y + offsetY][last.x] = '#';
+              }
+            }
+            if (safety <= 0) {
+              console.warn('safety hit');
+            }
+          }
+          console.log('dy:' + dy + ' ' + maxmaxy);
+        }
+        // console.log(grid.reduce((str, r) => r.join('') + '\n' + str, ''));
+        // 1830 is too low
+        return maxmaxy;
+      },
+      part2: (data) => {
+        // target area: x=20..30, y=-10..-5
+        // result: 112
+        // target area: x=211..232, y=-124..-69
+        const input = data.trim().split(', ').map(p => p.split('=')[1].split('..').map(Number));
+        const xl = input[0][0];
+        const xh = input[0][1];
+        const yl = input[1][0];
+        const yh = input[1][1];
+        const inTarget = (x, y) => {
+          return x >= xl && x <= xh && y >= yl && y <= yh;
+        };
+        let hits = 0;
+        for (let sy = yl; sy < 200; sy++) {
+          for (let sx = 1; sx < 400; sx++) {
+            let safety = 1000;
+            let vx = sx;
+            let vy = sy;
+            let lx = 0;
+            let ly = 0;
+            let isHit = 0;
+            while (!isHit && ly >= yl && lx <= xh && safety-- > 0) {
+              ly += vy--;
+              lx += Math.max(vx--, 0);
+              if (inTarget(lx, ly)) {
+                hits++;
+                isHit = 1;
+              }
+            }
+            if (safety <= 0) {
+              console.warn('safety hit');
+            }
+          }
+        }
+        return hits;
+      }
     },
     day18: {
       part1: () => {},

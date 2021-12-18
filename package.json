@@ -1,6 +1,6 @@
 {
   "name": "valiant-nervous-yoke",
-  "version": "2021.12.14",
+  "version": "2021.12.17",
   "description": "Travis's Advent of Code 2021",
   "author": "Travis Hardiman",
   "homepage": "https://valiant-nervous-yoke.glitch.me/",
@@ -15,7 +15,7 @@
   "dependencies": {
     "connect-timeout": "^1.9.0",
     "eslint": "^8.4.1",
-    "express": "^4.17.1",
+    "express": "^4.17.2",
     "express-rate-limit": "^5.5.1",
     "semistandard": "^16.0.1",
     "standard-engine": "^14.0.1"

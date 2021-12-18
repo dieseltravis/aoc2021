@@ -1412,8 +1412,75 @@
           x: [ input[0][0], input[0][1] ],
           y: [ input[1][0], input[1][1] ]
         };
-        console.log(target);
-        return null;
+        let ymax = 10;
+        let xmax = Math.max(...target.x);
+        let offsetY = -Math.min(...target.y) + 10;
+        const grid = Array.from({ length: offsetY + 10 }, () => Array.from({ length: xmax + 10 }, () => '.'));
+        grid[offsetY][0] = 'S';
+        for (let y = target.y[0]; y <= target.y[1]; y++) {
+          for (let x = target.x[0]; x <= target.x[1]; x++) {
+            grid[y + offsetY][x] = 'T';
+          }
+        }
+        let v = { dx: 0, dy: 0 };
+        let hit = 0;
+        let time = 0;
+        let maxmaxy = 0
+        let xstart = 0;
+        for (let x = 1; x < xmax; x++) {
+          let dx = x;
+          let sum = 0;
+          while (dx > 0) {
+            sum += dx;
+            dx--;
+            if (sum >= xmax) {
+              xstart = x;
+              dx = -1;
+              x = 999;
+            }
+          }
+        }
+        console.log('xstart:' + xstart);
+        // try different velocities
+        for (let dy = 100; dy < 200; dy++) {
+          for (let dx = 5; dx < 100; dx++) {
+            v.dy = dy;
+            v.dx = dx;
+            const last = { x: 0, y: 0 };
+            let maxy = 0;
+            let safety = 1000;
+            const newGrid = grid.map(r => r.slice()).slice();
+            while (last.y >= target.y[1] && last.x <= target.x[1] && safety-- > 0) {
+              time++;
+              last.y += v.dy--;
+              last.x += Math.max(v.dx--, 0);
+              ymax = Math.max(ymax, last.y + offsetY + 1);
+              const gridmax = newGrid.length - 1;
+              if (ymax >= gridmax) {
+                // expand grid
+                for (let ll = 10 + ymax - gridmax; ll--;) {
+                  newGrid.push(Array.from({ length: xmax + 10 }, () => '.'));
+                }
+              }
+              if (newGrid[last.y + offsetY]) {
+                if (newGrid[last.y + offsetY][last.x] === 'T') {
+                  hit++;
+                  maxmaxy = Math.max(maxy, maxmaxy);
+                  //console.log('hit ' + hit + ' at x:' + last.x + ', y:' + last.y + ' on step #' + time + ' for ' + maxy);
+                }
+                maxy = Math.max(maxy, last.y);
+                newGrid[last.y + offsetY][last.x] = '#';
+              }
+            }
+            if (safety <= 0) {
+              console.warn('safety hit');
+            }
+          }
+          console.log('dy:' + dy + ' ' + maxmaxy);
+        }
+        //console.log(grid.reduce((str, r) => r.join('') + '\n' + str, ''));
+        // 1830 is too low
+        return maxmaxy;
       },
       part2: () => {}
     },

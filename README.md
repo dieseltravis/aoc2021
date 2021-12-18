@@ -34,9 +34,9 @@ broken:
 13. [day thirteen](https://valiant-nervous-yoke.glitch.me/day/13)
 14. [day fourteen](https://valiant-nervous-yoke.glitch.me/day/14)
 15. [day fifteen](https://valiant-nervous-yoke.glitch.me/day/15) (part 1 too slow)
-16. [day sixteen](https://valiant-nervous-yoke.glitch.me/day/16)
-<!-- 
+16. [day sixteen](https://valiant-nervous-yoke.glitch.me/day/16) (broken, not fun)
 17. [day seventeen](https://valiant-nervous-yoke.glitch.me/day/17)
+<!-- 
 18. [day eighteen](https://valiant-nervous-yoke.glitch.me/day/18)
 19. [day nineteen](https://valiant-nervous-yoke.glitch.me/day/19)
 20. [day twenty](https://valiant-nervous-yoke.glitch.me/day/20)

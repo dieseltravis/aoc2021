@@ -1291,8 +1291,7 @@
         // getPaths(start, []);
         return min;
       },
-      part2: () => {
-      }
+      part2: () => {}
     },
     day16: {
       part1: (data) => {
@@ -1401,8 +1400,7 @@
         console.log(packets);
         return versions.reduce((result, v) => result + v, 0);
       },
-      part2: () => {
-      }
+      part2: () => {}
     },
     day17: {
       part1: () => {},

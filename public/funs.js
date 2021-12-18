@@ -1403,7 +1403,18 @@
       part2: () => {}
     },
     day17: {
-      part1: () => {},
+      part1: (data) => {
+        // target area: x=20..30, y=-10..-5
+        // result: 6,9 = 45
+        // target area: x=211..232, y=-124..-69
+        const input = data.trim().split(', ').map(p => p.split('=')[1].split('..').map(Number));
+        const target = {
+          x: [ input[0][0], input[0][1] ],
+          y: [ input[1][0], input[1][1] ]
+        };
+        console.log(target);
+        return null;
+      },
       part2: () => {}
     },
     day18: {

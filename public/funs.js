@@ -1594,7 +1594,18 @@
       part2: () => {}
     },
     day19: {
-      part1: () => {},
+      part1: (data) => {
+        const scanners = data.trim().split(/\r?\n\r?\n/).map(s => {
+          const rows = s.split(/\r?\n/);
+          const num = parseInt(rows.shift().match(/\d+/), 10);
+          const beacons = rows.map(r => r.split(',').map(Number));
+          return {
+            scanner: num,
+            beacons: beacons
+          };
+        });
+        console.log(scanners);
+      },
       part2: () => {}
     },
     day20: {

@@ -1609,7 +1609,61 @@
       part2: () => {}
     },
     day20: {
-      part1: () => {},
+      part1: (data) => {
+        const input = data.trim().split(/\r?\n\r?\n/);
+        const algo = input[0].split('').map(c => c === '#' ? 1 : 0);
+        const img = input[1].split(/\r?\n/).map(r => r.split('').map(c => c === '#' ? 1 : 0));
+        const W = 3;
+        const mid = Math.floor(W / 2);
+        const getPixel = (inImg, y, x) => {
+          const pixels = Array.from({ length: W }, () => Array.from({ length: W }, () => 0));
+          const maxY = inImg.length;
+          const maxX = inImg[0].length;
+          // something is off on the high end of indexes here
+          for (let yi = 0; yi < W; yi++) {
+            const yv = (y - mid + yi);
+            if (yv >= 0 && yv < maxY) {
+              for (let xi = 0; xi < W; xi++) {
+                const xv = (x - mid + xi);
+                //console.log(yv, xv);
+                if (xv >= 0 && xv < maxX) {
+                  pixels[yi][xi] = inImg[yv][xv];
+                }
+              }
+            }
+          }
+          const num = parseInt(pixels.map(r => r.join('')).join(''), 2);
+          const pixel = algo[num];
+          if (y === 1 && x === 2) {
+            console.log(JSON.stringify(pixels), num, pixel);
+          }
+          return pixel;
+        };
+        const enhance = (inImg) => {
+          const maxY = inImg.length;
+          const maxX = inImg[0].length;
+          const outImg = Array.from({ length: maxY + (2 * W) }, () => Array.from({ length: maxX + (2 * W) }, () => 0));
+          let chk = "";
+          for (let y = -W; y < maxY + W; y++) {
+            const yi = y + W;
+            for (let x = -W; x < maxX + W; x++) {
+              const xi = x + W;
+              outImg[yi][xi] = getPixel(inImg, y, x);
+              //console.log(y, x, yi, xi, outImg[yi][xi]);
+              chk += outImg[yi][xi];
+            }
+            chk += '\n';
+          }
+          console.log(chk);
+          return outImg;
+        };
+        console.log(img.map(r => r.join('')).join('\n').replace(/1/g, '#').replace(/0/g, '.'));
+        const result1 = enhance(img);
+        console.log(result1.map(r => r.join('')).join('\n').replace(/1/g, '#').replace(/0/g, '.'));
+        //const result2 = enhance(result1);
+        //console.log(result2.map(r => r.join('')).join('\n').replace(/1/g, '#').replace(/0/g, '.'));
+        //return result2.reduce((sum, r) => sum + r.reduce((sum2, r2) => sum2 + r2, 0), 0);
+      },
       part2: () => {}
     },
     day21: {

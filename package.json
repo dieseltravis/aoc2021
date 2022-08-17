@@ -18,7 +18,7 @@
     "express": "^4.17.2",
     "express-rate-limit": "^6.5.1",
     "semistandard": "^16.0.1",
-    "standard-engine": "^14.0.1"
+    "standard-engine": "^15.0.0"
   },
   "repository": {
     "url": "https://glitch.com/edit/#!/valiant-nervous-yoke"

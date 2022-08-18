@@ -17,7 +17,7 @@ const limiter = new RateLimit({
   windowMs: 30 * 1000,   // 30 seconds
   max: 10,
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-	legacyHeaders: false   // Disable the `X-RateLimit-*` headers
+  legacyHeaders: false   // Disable the `X-RateLimit-*` headers
 });
 
 app.use(timeout(1200000));

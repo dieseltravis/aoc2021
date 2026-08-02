@@ -13,12 +13,12 @@
     "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
   },
   "dependencies": {
-    "connect-timeout": "^1.9.0",
-    "eslint": "^8.4.1",
-    "express": "^4.17.2",
-    "express-rate-limit": "^5.5.1",
-    "semistandard": "^16.0.1",
-    "standard-engine": "^14.0.1"
+    "connect-timeout": "^1.9.1",
+    "eslint": "^10.8.0",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.6.1",
+    "semistandard": "^17.0.0",
+    "standard-engine": "^15.1.0"
   },
   "repository": {
     "url": "https://glitch.com/edit/#!/valiant-nervous-yoke"

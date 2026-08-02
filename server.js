@@ -14,8 +14,13 @@ const f = require('./public/funs');
 
 // set up rate limiter: maximum of 10 requests per 30 seconds
 const limiter = new RateLimit({
-  windowMs: 30 * 1000, // 30 seconds
-  max: 10
+  // 30 seconds
+  windowMs: 30 * 1000,
+  max: 10,
+  // Return rate limit info in the `RateLimit-*` headers
+  standardHeaders: true,
+  // Disable the `X-RateLimit-*` headers
+  legacyHeaders: false
 });
 
 app.use(timeout(1200000));
